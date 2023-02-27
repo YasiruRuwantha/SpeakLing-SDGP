@@ -2,10 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:frontend/constants.dart';
 import 'package:frontend/login.dart';
 import 'package:frontend/login_form.dart';
-import 'package:frontend/signup_child.dart';
 
-class SignupParent extends StatelessWidget {
-  const SignupParent({Key? key}) : super(key: key);
+class SignupChild extends StatefulWidget {
+  const SignupChild({Key? key}) : super(key: key);
+
+  @override
+  State<SignupChild> createState() => _SignupChildState();
+}
+
+class _SignupChildState extends State<SignupChild> {
+  bool selected = false;
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +48,7 @@ class SignupParent extends StatelessWidget {
               ),
 
               Text(
-                "Fill the parents' details",
+                "Fill the child's details",
                 style: TextStyle(
                   fontSize: 20,
                   color: Colors.white,
@@ -56,17 +62,18 @@ class SignupParent extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 40),
                   child: Text(
-                    "First name of the parent",
+                    "First name of the child",
                     style: TextStyle(color: Colors.white, fontSize: 16),
                   ),
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
                 child: TextField(
                   decoration: InputDecoration(
                       contentPadding: EdgeInsets.symmetric(horizontal: 20),
-                      hintText: "Parent's first name",
+                      hintText: "Child's first name",
                       filled: true,
                       fillColor: Colors.white,
                       border: OutlineInputBorder(
@@ -75,24 +82,24 @@ class SignupParent extends StatelessWidget {
                 ),
               ),
 
-
               //username
               Align(
                 alignment: Alignment.centerLeft,
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 40),
                   child: Text(
-                    "Last name of the parent",
+                    "Last name of the child",
                     style: TextStyle(color: Colors.white, fontSize: 16),
                   ),
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
                 child: TextField(
                   decoration: InputDecoration(
                       contentPadding: EdgeInsets.symmetric(horizontal: 20),
-                      hintText: "Parent's last name",
+                      hintText: "Child's last name",
                       filled: true,
                       fillColor: Colors.white,
                       border: OutlineInputBorder(
@@ -107,23 +114,65 @@ class SignupParent extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 40),
                   child: Text(
-                    "Contact No",
+                    "Date of Birth",
                     style: TextStyle(color: Colors.white, fontSize: 16),
                   ),
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
                 child: TextField(
-                  keyboardType: TextInputType.phone,
+                  keyboardType: TextInputType.datetime,
                   decoration: InputDecoration(
-                    contentPadding: EdgeInsets.symmetric(horizontal: 20),
-                      hintText: "+94 xxx xxx xxx",
+                      contentPadding: EdgeInsets.symmetric(horizontal: 20),
+                      hintText: "yyyy/mm/dd",
                       filled: true,
                       fillColor: Colors.white,
                       border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(30),
                           borderSide: BorderSide.none)),
+                ),
+              ),
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 40),
+                  child: Text(
+                    "Child's Speech Level",
+                    style: TextStyle(color: Colors.white, fontSize: 16),
+                  ),
+                ),
+              ),
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
+                child: TextField(
+                  decoration: InputDecoration(
+                      contentPadding: EdgeInsets.symmetric(horizontal: 20),
+                      hintText: "Babbling,Holophrastic, Two-word stage",
+                      filled: true,
+                      fillColor: Colors.white,
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(30),
+                          borderSide: BorderSide.none)),
+                ),
+              ),
+
+              CheckboxListTile(
+                value: selected,
+                onChanged: (value) {
+                  setState(() {
+                    selected = value ?? false;
+                  });
+                },
+                controlAffinity: ListTileControlAffinity.leading,
+                title: Text(
+                  "I agree with Terms & Privacy",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
 
@@ -137,23 +186,20 @@ class SignupParent extends StatelessWidget {
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
                         backgroundColor: lightBlue,
-                        padding: EdgeInsets.symmetric(vertical: 15, horizontal: 30),
+                        padding:
+                            EdgeInsets.symmetric(vertical: 15, horizontal: 30),
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(30))),
-                    onPressed: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) {
-                        return SignupChild();
-                      }));
-                    },
+                    onPressed: () {},
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Text(
-                          "Next",
+                          "Finish Signing Up",
                           style: TextStyle(fontSize: 18),
                         ),
                         SizedBox(width: 15),
-                        Icon(Icons.arrow_forward_ios),
+                        Icon(Icons.check),
                       ],
                     ),
                   ),
