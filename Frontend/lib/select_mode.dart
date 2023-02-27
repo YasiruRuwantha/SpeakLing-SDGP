@@ -3,6 +3,7 @@ import 'package:frontend/child_mode.dart';
 import 'package:frontend/constants.dart';
 import 'package:frontend/login.dart';
 import 'package:frontend/login_form.dart';
+import 'package:frontend/parent_mode.dart';
 import 'package:frontend/signup_child.dart';
 
 class SelectMode extends StatelessWidget {
@@ -82,9 +83,9 @@ class SelectMode extends StatelessWidget {
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(30))),
                     onPressed: () {
-                      // Navigator.push(context, MaterialPageRoute(builder: (context) {
-                      //   return SignupChild();
-                      // }));
+                      Navigator.push(context, MaterialPageRoute(builder: (context) {
+                        return ParentMode();
+                      }));
                     },
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
