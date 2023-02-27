@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/constants.dart';
-import 'package:frontend/signup_1.dart';
+import 'package:frontend/login.dart';
+import 'package:frontend/login_form.dart';
 
-class LoginForm extends StatelessWidget {
-  const LoginForm({Key? key}) : super(key: key);
+class Signup1 extends StatelessWidget {
+  const Signup1({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -39,6 +40,32 @@ class LoginForm extends StatelessWidget {
                 child: Image.asset("assets/logo.png"),
               ),
               SizedBox(height: 30),
+
+              //email
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 40),
+                  child: Text(
+                    "Email",
+                    style: TextStyle(color: Colors.white, fontSize: 16),
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
+                child: TextField(
+                  decoration: InputDecoration(
+                      contentPadding: EdgeInsets.symmetric(horizontal: 20),
+                      hintText: "Input your email",
+                      filled: true,
+                      fillColor: Colors.white,
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(30),
+                          borderSide: BorderSide.none)),
+                ),
+              ),
+
 
               //username
               Align(
@@ -91,38 +118,58 @@ class LoginForm extends StatelessWidget {
                 ),
               ),
 
-              //forger password
+              //password
               Align(
-                alignment: Alignment.centerRight,
+                alignment: Alignment.centerLeft,
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 40),
                   child: Text(
-                    "Forget Password",
-                    style: TextStyle(color: Colors.white, fontSize: 14),
+                    "Confirm Password",
+                    style: TextStyle(color: Colors.white, fontSize: 16),
                   ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
+                child: TextField(
+                  obscureText: true,
+                  decoration: InputDecoration(
+                      contentPadding: EdgeInsets.symmetric(horizontal: 20),
+                      hintText: "Input your password",
+                      filled: true,
+                      fillColor: Colors.white,
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(30),
+                          borderSide: BorderSide.none)),
                 ),
               ),
 
               SizedBox(height: 40),
 
               //button
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                    backgroundColor: lightBlue,
-                    padding: EdgeInsets.symmetric(vertical: 15, horizontal: 50),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30))),
-                onPressed: () {},
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(Icons.exit_to_app),
-                    SizedBox(width: 15),
-                    Text(
-                      "Login",
-                      style: TextStyle(fontSize: 18),
+              Padding(
+                padding: const EdgeInsets.only(right: 30),
+                child: Align(
+                  alignment: Alignment.centerRight,
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor: lightBlue,
+                        padding: EdgeInsets.symmetric(vertical: 15, horizontal: 30),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30))),
+                    onPressed: () {},
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          "Next",
+                          style: TextStyle(fontSize: 18),
+                        ),
+                        SizedBox(width: 15),
+                        Icon(Icons.arrow_forward_ios),
+                      ],
                     ),
-                  ],
+                  ),
                 ),
               ),
               SizedBox(height: 30),
@@ -130,7 +177,7 @@ class LoginForm extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    "Don't have an account? ",
+                    "Already have an account? ",
                     style: TextStyle(
                       fontSize: 18,
                       color: Colors.white,
@@ -140,11 +187,11 @@ class LoginForm extends StatelessWidget {
                   GestureDetector(
                     onTap: (){
                       Navigator.push(context, MaterialPageRoute(builder: (context) {
-                        return Signup1();
+                        return LoginForm();
                       }));
                     },
                     child: Text(
-                      "Signup",
+                      "Login",
                       style: TextStyle(
                         fontSize: 18,
                         color: Colors.white,
@@ -154,6 +201,7 @@ class LoginForm extends StatelessWidget {
                   ),
                 ],
               ),
+              SizedBox(height: 20),
             ],
           ),
         ),
