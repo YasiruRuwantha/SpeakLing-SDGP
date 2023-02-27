@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/constants.dart';
+import 'package:frontend/daily_report.dart';
 
 class ParentMode extends StatelessWidget {
   const ParentMode({Key? key}) : super(key: key);
@@ -171,7 +172,11 @@ class ParentMode extends StatelessWidget {
                               padding: EdgeInsets.symmetric(vertical: 15, horizontal: 10),
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(30))),
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.push(context, MaterialPageRoute(builder: (context) {
+                              return DailyReport();
+                            }));
+                          },
                           child: Text(
                             "View Daily Report",
                             style: TextStyle(fontSize: 14),
