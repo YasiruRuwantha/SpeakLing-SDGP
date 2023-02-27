@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/child_mode.dart';
 import 'package:frontend/constants.dart';
 import 'package:frontend/login.dart';
 import 'package:frontend/login_form.dart';
@@ -50,7 +51,7 @@ class SelectMode extends StatelessWidget {
                             borderRadius: BorderRadius.circular(30))),
                     onPressed: () {
                       Navigator.push(context, MaterialPageRoute(builder: (context) {
-                        return SignupChild();
+                        return ChildMode();
                       }));
                     },
                     child: Row(
@@ -81,9 +82,9 @@ class SelectMode extends StatelessWidget {
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(30))),
                     onPressed: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) {
-                        return SignupChild();
-                      }));
+                      // Navigator.push(context, MaterialPageRoute(builder: (context) {
+                      //   return SignupChild();
+                      // }));
                     },
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
