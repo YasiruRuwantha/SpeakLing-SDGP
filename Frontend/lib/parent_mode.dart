@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:frontend/constants.dart';
 import 'package:frontend/daily_report.dart';
 
+import 'full_report.dart';
+
 class ParentMode extends StatelessWidget {
   const ParentMode({Key? key}) : super(key: key);
 
@@ -237,7 +239,11 @@ class ParentMode extends StatelessWidget {
                       padding: EdgeInsets.symmetric(vertical: 15, horizontal: 20),
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(30))),
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) {
+                      return FullReport();
+                    }));
+                  },
                   child: Text(
                     "View Full Report",
                     style: TextStyle(fontSize: 14),

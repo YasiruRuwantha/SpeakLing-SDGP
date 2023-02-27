@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/constants.dart';
+import 'package:frontend/full_report.dart';
 import 'package:frontend/models/bar_chart_model.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
@@ -181,7 +182,11 @@ class DailyReport extends StatelessWidget {
                           EdgeInsets.symmetric(vertical: 15, horizontal: 20),
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(30))),
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) {
+                      return FullReport();
+                    }));
+                  },
                   child: Text(
                     "View Full Report",
                     style: TextStyle(fontSize: 14),
