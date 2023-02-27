@@ -2,10 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:frontend/constants.dart';
 import 'package:frontend/login.dart';
 import 'package:frontend/login_form.dart';
-import 'package:frontend/signup_parent.dart';
 
-class Signup1 extends StatelessWidget {
-  const Signup1({Key? key}) : super(key: key);
+class SignupParent extends StatelessWidget {
+  const SignupParent({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -37,18 +36,26 @@ class Signup1 extends StatelessWidget {
               ),
               Padding(
                 padding:
-                    const EdgeInsets.symmetric(vertical: 50, horizontal: 35),
+                    const EdgeInsets.symmetric(vertical: 30, horizontal: 35),
                 child: Image.asset("assets/logo.png"),
               ),
-              SizedBox(height: 30),
 
+              Text(
+                "Fill the parents details",
+                style: TextStyle(
+                  fontSize: 20,
+                  color: Colors.white,
+                ),
+              ),
+
+              SizedBox(height: 30),
               //email
               Align(
                 alignment: Alignment.centerLeft,
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 40),
                   child: Text(
-                    "Email",
+                    "First name of the parent",
                     style: TextStyle(color: Colors.white, fontSize: 16),
                   ),
                 ),
@@ -58,7 +65,7 @@ class Signup1 extends StatelessWidget {
                 child: TextField(
                   decoration: InputDecoration(
                       contentPadding: EdgeInsets.symmetric(horizontal: 20),
-                      hintText: "Input your email",
+                      hintText: "Parent's first name",
                       filled: true,
                       fillColor: Colors.white,
                       border: OutlineInputBorder(
@@ -74,7 +81,7 @@ class Signup1 extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 40),
                   child: Text(
-                    "Username",
+                    "Last name of the parent",
                     style: TextStyle(color: Colors.white, fontSize: 16),
                   ),
                 ),
@@ -84,7 +91,7 @@ class Signup1 extends StatelessWidget {
                 child: TextField(
                   decoration: InputDecoration(
                       contentPadding: EdgeInsets.symmetric(horizontal: 20),
-                      hintText: "Input your username",
+                      hintText: "Parent's last name",
                       filled: true,
                       fillColor: Colors.white,
                       border: OutlineInputBorder(
@@ -99,7 +106,7 @@ class Signup1 extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 40),
                   child: Text(
-                    "Password",
+                    "Contact No",
                     style: TextStyle(color: Colors.white, fontSize: 16),
                   ),
                 ),
@@ -107,36 +114,10 @@ class Signup1 extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
                 child: TextField(
-                  obscureText: true,
+                  keyboardType: TextInputType.phone,
                   decoration: InputDecoration(
                     contentPadding: EdgeInsets.symmetric(horizontal: 20),
-                      hintText: "Input your password",
-                      filled: true,
-                      fillColor: Colors.white,
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(30),
-                          borderSide: BorderSide.none)),
-                ),
-              ),
-
-              //password
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 40),
-                  child: Text(
-                    "Confirm Password",
-                    style: TextStyle(color: Colors.white, fontSize: 16),
-                  ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
-                child: TextField(
-                  obscureText: true,
-                  decoration: InputDecoration(
-                      contentPadding: EdgeInsets.symmetric(horizontal: 20),
-                      hintText: "Input your password",
+                      hintText: "+94 xxx xxx xxx",
                       filled: true,
                       fillColor: Colors.white,
                       border: OutlineInputBorder(
@@ -158,11 +139,7 @@ class Signup1 extends StatelessWidget {
                         padding: EdgeInsets.symmetric(vertical: 15, horizontal: 30),
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(30))),
-                    onPressed: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) {
-                        return SignupParent();
-                      }));
-                    },
+                    onPressed: () {},
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
@@ -178,35 +155,6 @@ class Signup1 extends StatelessWidget {
                 ),
               ),
               SizedBox(height: 30),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    "Already have an account? ",
-                    style: TextStyle(
-                      fontSize: 18,
-                      color: Colors.white,
-                    ),
-                  ),
-                  SizedBox(width: 10),
-                  GestureDetector(
-                    onTap: (){
-                      Navigator.push(context, MaterialPageRoute(builder: (context) {
-                        return LoginForm();
-                      }));
-                    },
-                    child: Text(
-                      "Login",
-                      style: TextStyle(
-                        fontSize: 18,
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(height: 20),
             ],
           ),
         ),
