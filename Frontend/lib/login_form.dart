@@ -16,7 +16,7 @@ class LoginForm extends StatefulWidget{
 }
 
 class _LoginFormState extends State<LoginForm> {
-
+  //Creating the variables
   final userEmail = TextEditingController();
   final userPassword = TextEditingController();
 

@@ -15,7 +15,7 @@ class ForgotPassword extends StatefulWidget {
 }
 
 class _ForgotPasswordState extends State<ForgotPassword> {
-
+  //Creating the variables
   final formKey = GlobalKey<FormState>();
   final userEmail = TextEditingController();
 
