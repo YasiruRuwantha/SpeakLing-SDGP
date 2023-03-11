@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:frontend/constants.dart';
 import 'package:frontend/login.dart';
 import 'package:frontend/login_form.dart';
+import 'package:frontend/select_mode.dart';
 
 class SignupChild extends StatefulWidget {
   const SignupChild({Key? key}) : super(key: key);
@@ -190,7 +191,11 @@ class _SignupChildState extends State<SignupChild> {
                             EdgeInsets.symmetric(vertical: 15, horizontal: 30),
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(30))),
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(context, MaterialPageRoute(builder: (context) {
+                        return SelectMode();
+                      }));
+                      },
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [

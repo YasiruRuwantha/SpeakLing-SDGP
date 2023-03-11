@@ -1,11 +1,33 @@
+import 'package:email_validator/email_validator.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend/constants.dart';
 import 'package:frontend/login.dart';
 import 'package:frontend/login_form.dart';
 import 'package:frontend/signup_parent.dart';
 
-class Signup1 extends StatelessWidget {
+import 'Utils.dart';
+
+class Signup1 extends StatefulWidget {
   const Signup1({Key? key}) : super(key: key);
+
+  @override
+  State<Signup1> createState() => _Signup1State();
+}
+
+class _Signup1State extends State<Signup1> {
+  final formKey = GlobalKey<FormState>();
+  final userEmail = TextEditingController();
+  final userPassword = TextEditingController();
+  //final user = FirebaseAuth.instance.currentUser!;
+  var isDisable = false;
+
+  @override
+  dispose(){
+    userEmail.dispose();
+    userPassword.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +40,9 @@ class Signup1 extends StatelessWidget {
               image: AssetImage("assets/background.jpeg"), fit: BoxFit.cover),
         ),
         child: SingleChildScrollView(
-          child: Column(
+          child: Form(
+            key: formKey,
+            child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               SizedBox(height: 50),
@@ -55,7 +79,8 @@ class Signup1 extends StatelessWidget {
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
-                child: TextField(
+                child: TextFormField(
+                  controller:userEmail,
                   decoration: InputDecoration(
                       contentPadding: EdgeInsets.symmetric(horizontal: 20),
                       hintText: "Input your email",
@@ -64,6 +89,11 @@ class Signup1 extends StatelessWidget {
                       border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(30),
                           borderSide: BorderSide.none)),
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  validator: (email) =>
+                    email != null && !EmailValidator.validate(email)
+                  ? 'Enter a valid email!'
+                  :null,
                 ),
               ),
 
@@ -81,7 +111,7 @@ class Signup1 extends StatelessWidget {
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
-                child: TextField(
+                child: TextFormField(
                   decoration: InputDecoration(
                       contentPadding: EdgeInsets.symmetric(horizontal: 20),
                       hintText: "Input your username",
@@ -90,6 +120,10 @@ class Signup1 extends StatelessWidget {
                       border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(30),
                           borderSide: BorderSide.none)),
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  validator: (username) => username == null || username == ''
+                      ? 'Username cannot be empty!'
+                      : null,
                 ),
               ),
 
@@ -106,7 +140,8 @@ class Signup1 extends StatelessWidget {
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
-                child: TextField(
+                child: TextFormField(
+                  controller:userPassword,
                   obscureText: true,
                   decoration: InputDecoration(
                     contentPadding: EdgeInsets.symmetric(horizontal: 20),
@@ -116,6 +151,10 @@ class Signup1 extends StatelessWidget {
                       border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(30),
                           borderSide: BorderSide.none)),
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  validator: (value) => value != null && value.length < 6
+                    ? 'Enter minimum of 6 characters!'
+                    : null,
                 ),
               ),
 
@@ -132,16 +171,20 @@ class Signup1 extends StatelessWidget {
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
-                child: TextField(
+                child: TextFormField(
                   obscureText: true,
                   decoration: InputDecoration(
                       contentPadding: EdgeInsets.symmetric(horizontal: 20),
-                      hintText: "Input your password",
+                      hintText: "Confirm your password",
                       filled: true,
                       fillColor: Colors.white,
                       border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(30),
                           borderSide: BorderSide.none)),
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  validator: (value) => value != null && value != userPassword.text.trim()
+                      ? 'Password is not a match!'
+                      : null,
                 ),
               ),
 
@@ -158,16 +201,12 @@ class Signup1 extends StatelessWidget {
                         padding: EdgeInsets.symmetric(vertical: 15, horizontal: 30),
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(30))),
-                    onPressed: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) {
-                        return SignupParent();
-                      }));
-                    },
+                    onPressed: signUp,
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Text(
-                          "Next",
+                          "Sign Up",
                           style: TextStyle(fontSize: 18),
                         ),
                         SizedBox(width: 15),
@@ -177,6 +216,41 @@ class Signup1 extends StatelessWidget {
                   ),
                 ),
               ),
+              Padding(
+                padding: const EdgeInsets.only(right: 30),
+                child: Align(
+                  alignment: Alignment.centerRight,
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor: lightBlue,
+                        padding: EdgeInsets.symmetric(vertical: 15, horizontal: 30),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30))),
+                    onPressed:(){
+                      if(isDisable){
+                        Navigator.push(context, MaterialPageRoute(builder: (context) {
+                          return SignupParent();
+                        }));
+                      }
+                      else{
+                        Utils.showSnackBarRed('Sign up first!');
+                      }
+                    },
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          "Continue",
+                          style: TextStyle(fontSize: 18),
+                        ),
+                        SizedBox(width: 15),
+                        Icon(Icons.arrow_forward_ios),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+
               SizedBox(height: 30),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -210,7 +284,32 @@ class Signup1 extends StatelessWidget {
             ],
           ),
         ),
+        ),
       ),
     );
   }
+
+  Future signUp() async{
+    final isValid = formKey.currentState!.validate();
+    if (!isValid) return;
+    try{
+      String email = userEmail.text.trim();
+      await FirebaseAuth.instance.createUserWithEmailAndPassword(
+          email: email,
+          password: userPassword.text.trim()
+      );
+      isDisable = true;
+      Utils.showSnackBarGreen('Sign up successfully as $email');
+
+    } on FirebaseAuthException catch (error){
+      Utils.showSnackBarRed(error.message);
+    }
+
+  }
+
+
+
 }
+
+
+

@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend/child_mode.dart';
 import 'package:frontend/constants.dart';
@@ -5,6 +6,8 @@ import 'package:frontend/login.dart';
 import 'package:frontend/login_form.dart';
 import 'package:frontend/parent_mode.dart';
 import 'package:frontend/signup_child.dart';
+
+import 'Utils.dart';
 
 class SelectMode extends StatelessWidget {
   const SelectMode({Key? key}) : super(key: key);
@@ -94,6 +97,36 @@ class SelectMode extends StatelessWidget {
                         SizedBox(width: 15),
                         Text(
                           "Parent Mode",
+                          style: TextStyle(fontSize: 18),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+
+              //SignOut
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 80),
+                child: SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor: orange,
+                        padding: EdgeInsets.symmetric(vertical: 15),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30))),
+                    onPressed: () {
+                      Utils.showSnackBarGreen('Signing out!');
+                      FirebaseAuth.instance.signOut();
+                      },
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(Icons.family_restroom),
+                        SizedBox(width: 15),
+                        Text(
+                          "Sign Out",
                           style: TextStyle(fontSize: 18),
                         ),
                       ],

@@ -1,9 +1,31 @@
+import 'package:email_validator/email_validator.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend/constants.dart';
+import 'package:frontend/forgot_password.dart';
+import 'package:frontend/main.dart';
 import 'package:frontend/signup_1.dart';
 
-class LoginForm extends StatelessWidget {
+import 'Utils.dart';
+
+class LoginForm extends StatefulWidget{
   const LoginForm({Key? key}) : super(key: key);
+
+  @override
+  State<LoginForm> createState() => _LoginFormState();
+}
+
+class _LoginFormState extends State<LoginForm> {
+
+  final userEmail = TextEditingController();
+  final userPassword = TextEditingController();
+
+  @override
+  dispose(){
+    userEmail.dispose();
+    userPassword.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -53,15 +75,21 @@ class LoginForm extends StatelessWidget {
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
-                child: TextField(
+                child: TextFormField(
+                  controller:userEmail,
                   decoration: InputDecoration(
                       contentPadding: EdgeInsets.symmetric(horizontal: 20),
-                      hintText: "Input your username",
+                      hintText: "Input your email",
                       filled: true,
                       fillColor: Colors.white,
                       border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(30),
                           borderSide: BorderSide.none)),
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  validator: (email) =>
+                  email != null && !EmailValidator.validate(email)
+                      ? 'Enter a valid email!'
+                      :null,
                 ),
               ),
 
@@ -78,7 +106,8 @@ class LoginForm extends StatelessWidget {
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
-                child: TextField(
+                child: TextFormField(
+                  controller: userPassword,
                   obscureText: true,
                   decoration: InputDecoration(
                     contentPadding: EdgeInsets.symmetric(horizontal: 20),
@@ -88,21 +117,31 @@ class LoginForm extends StatelessWidget {
                       border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(30),
                           borderSide: BorderSide.none)),
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  validator: (value) => value != null && value.length < 6
+                      ? 'Enter minimum of 6 characters!'
+                      : null,
                 ),
               ),
 
-              //forger password
-              Align(
+              //forgot password
+              GestureDetector(
+                onTap: (){
+                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                  return ForgotPassword();
+                  }));
+                },
+                child: Align(
                 alignment: Alignment.centerRight,
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 40),
                   child: Text(
-                    "Forget Password",
+                    "Forgot Password?",
                     style: TextStyle(color: Colors.white, fontSize: 14),
                   ),
                 ),
               ),
-
+              ),
               SizedBox(height: 40),
 
               //button
@@ -112,7 +151,7 @@ class LoginForm extends StatelessWidget {
                     padding: EdgeInsets.symmetric(vertical: 15, horizontal: 50),
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(30))),
-                onPressed: () {},
+                onPressed: logIn,
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
@@ -159,5 +198,18 @@ class LoginForm extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Future logIn() async{
+    try{
+      String email = userEmail.text.trim();
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+          email: email,
+          password: userPassword.text.trim()
+      );
+     Utils.showSnackBarGreen('Log in successful as $email');
+    } on FirebaseAuthException catch(error){
+       Utils.showSnackBarRed(error.message);
+    }
   }
 }
