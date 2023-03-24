@@ -23,29 +23,6 @@ class MyApp extends StatelessWidget {
     }
 }
 
-
-/*class Login extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: StreamBuilder<User?>(
-        stream: FirebaseAuth.instance.authStateChanges(),
-        builder: (context,snapshot){
-          if(snapshot.hasData){
-            return SelectMode();
-          }
-          else{
-            return LoginForm();
-
-          }
-        },
-      ),
-    );
-  }
-}*/
-
 class Login extends StatelessWidget {
 
   @override

@@ -1,8 +1,76 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend/constants.dart';
 
-class ChildMode extends StatelessWidget {
+class ChildMode extends StatefulWidget {
   const ChildMode({Key? key}) : super(key: key);
+
+  @override
+  State<ChildMode> createState() => _ChildModeState();
+}
+
+class _ChildModeState extends State<ChildMode> {
+///////ADD THE DETAILSSSSSSSSS
+  String userDOB = '';
+  String fName = '';
+  String lName = '';
+  String speechLevel = '';
+
+  @override
+  void initState() {
+    super.initState();
+    getCurrentUserDOB();
+  }
+
+  Future<void> getCurrentUserDOB() async {
+    final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+    final FirebaseAuth _auth = FirebaseAuth.instance;
+    // Get the current user
+    User? currentUser = _auth.currentUser;
+
+    if (currentUser == null) {
+      // No user is signed in
+      print('Error: No user is signed in');
+      return;
+    }
+
+    // Fetch the user's document from Firestore using their uid
+    DocumentReference userDocRef = _firestore.collection('User_Collection').doc(
+        currentUser.uid);
+    DocumentSnapshot userDocSnapshot = await userDocRef.get();
+
+    if (!userDocSnapshot.exists) {
+      // The user's document doesn't exist
+      print('Error: User document not found');
+      return;
+    }
+
+    // Get the user's DOB from the document
+    if (mounted) {
+      setState(() {
+        userDOB = userDocSnapshot['DOB'];
+        fName = userDocSnapshot['Child_First_Name'];
+        lName = userDocSnapshot['Child_Last_Name'];
+        speechLevel = userDocSnapshot['Speech_Level'];
+      });
+    }
+
+    if (userDOB == null) {
+      // The user's DOB is not set in the document
+      print('Error: DOB field not found or set to null');
+    }
+  }
+
+
+  //Interpreter _interpreter;
+
+  /* @override
+  void initState() {
+    super.initState();
+    loadModel();
+  }*/
+
 
   @override
   Widget build(BuildContext context) {
@@ -82,7 +150,9 @@ class ChildMode extends StatelessWidget {
                     ),
                     SizedBox(height: 30),
                     Text(
-                      "Adam Richmond",
+                      "Name: $fName $lName\n"
+                          "DOB: $userDOB\n"
+                          "Speech Level: $speechLevel",
                       style: TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,

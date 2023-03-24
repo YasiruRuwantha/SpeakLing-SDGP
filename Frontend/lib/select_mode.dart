@@ -104,6 +104,7 @@ class SelectMode extends StatelessWidget {
                   ),
                 ),
               ),
+              SizedBox(height: 30),
 
               //SignOut
               Padding(

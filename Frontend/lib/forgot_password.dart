@@ -106,6 +106,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                     ),
                   ),
                 ),
+                SizedBox(height: 30),
                 Padding(
                   padding: const EdgeInsets.only(right: 30),
                   child: Align(

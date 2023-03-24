@@ -16,7 +16,6 @@ class LoginForm extends StatefulWidget{
 }
 
 class _LoginFormState extends State<LoginForm> {
-  //Creating the variables
   final userEmail = TextEditingController();
   final userPassword = TextEditingController();
 
@@ -57,7 +56,7 @@ class _LoginFormState extends State<LoginForm> {
               ),
               Padding(
                 padding:
-                    const EdgeInsets.symmetric(vertical: 50, horizontal: 35),
+                const EdgeInsets.symmetric(vertical: 50, horizontal: 35),
                 child: Image.asset("assets/logo.png"),
               ),
               SizedBox(height: 30),
@@ -110,7 +109,7 @@ class _LoginFormState extends State<LoginForm> {
                   controller: userPassword,
                   obscureText: true,
                   decoration: InputDecoration(
-                    contentPadding: EdgeInsets.symmetric(horizontal: 20),
+                      contentPadding: EdgeInsets.symmetric(horizontal: 20),
                       hintText: "Input your password",
                       filled: true,
                       fillColor: Colors.white,
@@ -128,19 +127,19 @@ class _LoginFormState extends State<LoginForm> {
               GestureDetector(
                 onTap: (){
                   Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  return ForgotPassword();
+                    return ForgotPassword();
                   }));
                 },
                 child: Align(
-                alignment: Alignment.centerRight,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 40),
-                  child: Text(
-                    "Forgot Password?",
-                    style: TextStyle(color: Colors.white, fontSize: 14),
+                  alignment: Alignment.centerRight,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 40),
+                    child: Text(
+                      "Forgot Password?",
+                      style: TextStyle(color: Colors.white, fontSize: 14),
+                    ),
                   ),
                 ),
-              ),
               ),
               SizedBox(height: 40),
 
@@ -207,9 +206,9 @@ class _LoginFormState extends State<LoginForm> {
           email: email,
           password: userPassword.text.trim()
       );
-     Utils.showSnackBarGreen('Log in successful as $email');
+      Utils.showSnackBarGreen('Log in successful as $email');
     } on FirebaseAuthException catch(error){
-       Utils.showSnackBarRed(error.message);
+      Utils.showSnackBarRed(error.message);
     }
   }
 }
