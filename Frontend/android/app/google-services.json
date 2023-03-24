@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "323193197657",
+    "project_id": "speakling-project-d8bc8",
+    "storage_bucket": "speakling-project-d8bc8.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:323193197657:android:13f71c2050f5dd83abcd48",
+        "android_client_info": {
+          "package_name": "com.example.frontend"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "323193197657-l5vcv74n3g1k44rjo30gr1f8bjqtg7iv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAvwMiMJ8caOGIVLlbYi-Ou8trcU854KT8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "323193197657-l5vcv74n3g1k44rjo30gr1f8bjqtg7iv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
