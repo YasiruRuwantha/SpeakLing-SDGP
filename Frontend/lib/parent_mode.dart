@@ -1,11 +1,64 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend/constants.dart';
 import 'package:frontend/daily_report.dart';
 
 import 'full_report.dart';
 
-class ParentMode extends StatelessWidget {
+class ParentMode extends StatefulWidget {
   const ParentMode({Key? key}) : super(key: key);
+
+  @override
+  State<ParentMode> createState() => _ParentModeState();
+}
+
+class _ParentModeState extends State<ParentMode> {
+
+  String fName = '';
+  String lName = '';
+
+  @override
+  void initState() {
+    super.initState();
+    getCurrentUser();
+  }
+
+  Future<void> getCurrentUser() async {
+    final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+    final FirebaseAuth _auth = FirebaseAuth.instance;
+    // Get the current user
+    User? currentUser = _auth.currentUser;
+
+    if (currentUser == null) {
+      // No user is signed in
+      print('Error: No user is signed in');
+      return;
+    }
+
+    // Fetch the user's document from Firestore using their uid
+    DocumentReference userDocRef = _firestore.collection('User_Collection').doc(currentUser.uid);
+    DocumentSnapshot userDocSnapshot = await userDocRef.get();
+
+    if (!userDocSnapshot.exists) {
+      // The user's document doesn't exist
+      print('Error: User document not found');
+      return;
+    }
+
+    // Get the user's DOB from the document
+    if (mounted) {
+      setState(() {
+        fName = userDocSnapshot['Parent_First_Name'];
+        lName = userDocSnapshot['Parent_Last_Name'];
+      });
+    }
+
+   /* if (userDOB == null) {
+      // The user's DOB is not set in the document
+      print('Error: DOB field not found or set to null');
+    }*/
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +98,7 @@ class ParentMode extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               Text(
-                "Child's Listening Status",
+                "$fName $lName\nChild's Listening Status",
                 style: TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.bold,

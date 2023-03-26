@@ -199,6 +199,27 @@ class _ChildModeState extends State<ChildMode> {
               )
             ],
           ),
+          SizedBox(height: 30),
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+                backgroundColor: orange,
+                padding: EdgeInsets.symmetric(vertical: 15),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30))),
+            onPressed:()async{},
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(Icons.family_restroom),
+                SizedBox(width: 35),
+                Text(
+                  " LISTEN MODE ",
+                  //_isListening ? 'Stop Listening' : 'Start Listening',
+                  //style: TextStyle(fontSize: 18),
+                ),
+              ],
+            ),
+          ),
         ],
       ),
     );
