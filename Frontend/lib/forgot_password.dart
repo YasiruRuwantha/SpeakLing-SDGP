@@ -7,6 +7,14 @@ import 'package:frontend/login_form.dart';
 import 'Utils.dart';
 import 'constants.dart';
 
+class UserEmailValidator{
+  static String? validate(String value){
+    return value != null && !EmailValidator.validate(value)
+        ? 'Enter a valid email!'
+        :null;
+  }
+}
+
 class ForgotPassword extends StatefulWidget {
   const ForgotPassword({Key? key}) : super(key: key);
 
@@ -71,10 +79,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                             borderRadius: BorderRadius.circular(30),
                             borderSide: BorderSide.none)),
                     autovalidateMode: AutovalidateMode.onUserInteraction,
-                    validator: (email) =>
-                    email != null && !EmailValidator.validate(email)
-                        ? 'Enter a valid email!'
-                        :null,
+                    validator: (email) => UserEmailValidator.validate(email!),
                   ),
                 ),
 
@@ -106,7 +111,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                     ),
                   ),
                 ),
-                SizedBox(height: 30),
+               /* SizedBox(height: 30),
                 Padding(
                   padding: const EdgeInsets.only(right: 30),
                   child: Align(
@@ -135,7 +140,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                       ),
                     ),
                   ),
-                ),
+                ),*/
               ],
             ),
           ),

@@ -8,6 +8,22 @@ import 'package:frontend/signup_parent.dart';
 
 import 'Utils.dart';
 
+class UserPasswordValidator{
+  static String? validate(String value){
+    return value != null && value.length < 6
+        ? 'Enter minimum of 6 characters!'
+        : null;
+  }
+}
+
+class UserEmailValidator{
+  static String? validate(String value){
+    return value != null && !EmailValidator.validate(value)
+        ? 'Enter a valid email!'
+        :null;
+  }
+}
+
 class Signup1 extends StatefulWidget {
   const Signup1({Key? key}) : super(key: key);
 
@@ -92,10 +108,7 @@ class _Signup1State extends State<Signup1> {
                             borderRadius: BorderRadius.circular(30),
                             borderSide: BorderSide.none)),
                     autovalidateMode: AutovalidateMode.onUserInteraction,
-                    validator: (email) =>
-                    email != null && !EmailValidator.validate(email)
-                        ? 'Enter a valid email!'
-                        :null,
+                    validator: (email) => UserEmailValidator.validate(email!),
                   ),
                 ),
 
@@ -155,9 +168,7 @@ class _Signup1State extends State<Signup1> {
                             borderRadius: BorderRadius.circular(30),
                             borderSide: BorderSide.none)),
                     autovalidateMode: AutovalidateMode.onUserInteraction,
-                    validator: (value) => value != null && value.length < 6
-                        ? 'Enter minimum of 6 characters!'
-                        : null,
+                    validator: (value) => UserPasswordValidator.validate(value!),
                   ),
                 ),
 
