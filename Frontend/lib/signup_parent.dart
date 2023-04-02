@@ -6,6 +6,22 @@ import 'package:frontend/login.dart';
 import 'package:frontend/login_form.dart';
 import 'package:frontend/signup_child.dart';
 
+class ParetnFNameValidator{
+  static String? validate(String value){
+    return value == null || value == ''
+        ? 'First name cannot be empty!'
+        : null;
+  }
+}
+
+class ParetnLNameValidator{
+  static String? validate(String value){
+    return value == null || value == ''
+        ? 'Last name cannot be empty!'
+        : null;
+  }
+}
+
 class SignupParent extends StatefulWidget {
   //const SignupParent({Key? key}) : super(key: key);
   SignupParent({required this.emailId, required this.userId}) : super();
@@ -99,9 +115,7 @@ class _SignupParentState extends State<SignupParent> {
                             borderRadius: BorderRadius.circular(30),
                             borderSide: BorderSide.none)),
                     autovalidateMode: AutovalidateMode.onUserInteraction,
-                    validator: (parentFName) => parentFName == null || parentFName == ''
-                        ? 'Field cannot be empty!'
-                        : null,
+                    validator: (parentFName) => ParetnFNameValidator.validate(parentFName!),
                   ),
                 ),
 
@@ -130,9 +144,7 @@ class _SignupParentState extends State<SignupParent> {
                             borderRadius: BorderRadius.circular(30),
                             borderSide: BorderSide.none)),
                     autovalidateMode: AutovalidateMode.onUserInteraction,
-                    validator: (parentLName) => parentLName == null || parentLName == ''
-                        ? 'Field cannot be empty!'
-                        : null,
+                    validator: (parentLName) => ParetnLNameValidator.validate(parentLName!),
                   ),
                 ),
 

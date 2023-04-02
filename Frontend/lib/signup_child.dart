@@ -7,6 +7,35 @@ import 'package:frontend/login.dart';
 import 'package:frontend/login_form.dart';
 import 'package:frontend/select_mode.dart';
 
+class ChildFNameValidator{
+  static String? validate(String value){
+    return value.isEmpty ? 'First name cannot be null' : null;
+  }
+}
+class ChildLNameValidator{
+  static String? validate(String value){
+    return value == null || value == ''
+        ? 'Last name cannot be null'
+        : null;
+  }
+}
+
+class ChildDOBValidator{
+  static String? validate(String value){
+    return value == null || value == ''
+        ? 'DOB cannot be null'
+        : null;
+  }
+}
+
+class ChildSpeechLevelValidator{
+  static String? validate(String value){
+    return value == null || value == ''
+        ? 'Speech level cannot be null'
+        : null;
+  }
+}
+
 class SignupChild extends StatefulWidget {
   //const SignupChild({Key? key}) : super(key: key);
   SignupChild({required this.parentFName, required this.parentLName, required this.emailId, required this.userId}) : super();
@@ -107,9 +136,7 @@ class _SignupChildState extends State<SignupChild> {
                             borderRadius: BorderRadius.circular(30),
                             borderSide: BorderSide.none)),
                     autovalidateMode: AutovalidateMode.onUserInteraction,
-                    validator: (childFName) => childFName == null || childFName == ''
-                        ? 'Field cannot be empty!'
-                        : null,
+                    validator: (childFName) => ChildFNameValidator.validate(childFName!),
                   ),
                 ),
 
@@ -138,9 +165,7 @@ class _SignupChildState extends State<SignupChild> {
                             borderRadius: BorderRadius.circular(30),
                             borderSide: BorderSide.none)),
                     autovalidateMode: AutovalidateMode.onUserInteraction,
-                    validator: (childLName) => childLName == null || childLName == ''
-                        ? 'Field cannot be empty!'
-                        : null,
+                    validator: (childLName) => ChildLNameValidator.validate(childLName!),
                   ),
                 ),
 
@@ -170,9 +195,7 @@ class _SignupChildState extends State<SignupChild> {
                             borderRadius: BorderRadius.circular(30),
                             borderSide: BorderSide.none)),
                     autovalidateMode: AutovalidateMode.onUserInteraction,
-                    validator: (dob) => dob == null || dob == ""
-                        ? 'Invalid input!'
-                        : null,
+                    validator: (dob) => ChildDOBValidator.validate(dob!),
                   ),
                 ),
                 Align(
@@ -199,9 +222,7 @@ class _SignupChildState extends State<SignupChild> {
                             borderRadius: BorderRadius.circular(30),
                             borderSide: BorderSide.none)),
                     autovalidateMode: AutovalidateMode.onUserInteraction,
-                    validator: (speechLevel) => speechLevel == null || speechLevel == ''
-                        ? 'Field cannot be empty!'
-                        : null,
+                    validator: (speechLevel) => ChildSpeechLevelValidator.validate(speechLevel!),
                   ),
                 ),
 
