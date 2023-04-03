@@ -1,7 +1,12 @@
+import 'dart:async';
+import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend/constants.dart';
+import 'package:tflite_audio/tflite_audio.dart';
+
+
 
 class ChildMode extends StatefulWidget {
   const ChildMode({Key? key}) : super(key: key);
@@ -11,17 +16,79 @@ class ChildMode extends StatefulWidget {
 }
 
 class _ChildModeState extends State<ChildMode> {
+
+  final isRecording = ValueNotifier<bool>(false);
+  Stream<Map<dynamic, dynamic>>? recognitionStream;//Declare stream value
+
+  ///values for google's teachable machine model
+  final String model = 'assets/speakling-speech.tflite'; //path to model(.tflite) file
+  final String label = 'assets/speak.txt'; //path to labels(.txt) file
+  final String inputType = 'rawAudio';
+  final int sampleRate = 44100;
+  final int bufferSize = 11016;
+
+
+  ///Optional parameters you can adjust to modify your input and output
+  final bool outputRawScores = false;
+  final int numOfInferences = 10; //10 recording(1s to 2s) rounds per one click on "LISTEN MODE"
+  final int numThreads = 1;
+  final bool isAsset = true;
+
+  ///Adjust the values below when tuning model detection.
+  final double detectionThreshold = 0.3;
+  final int averageWindowDuration = 1000;
+  final int minimumTimeBetweenSamples = 30;
+  final int suppressionTime = 1500;
+
+
 ///////ADD THE DETAILSSSSSSSSS
   String userDOB = '';
   String fName = '';
   String lName = '';
   String speechLevel = '';
+  String result='result';
 
   @override
   void initState() {
     super.initState();
     getCurrentUserDOB();
+
+    ///load Tflite_audio model
+    TfliteAudio.loadModel(
+        model: model,
+        label: label,
+        inputType: 'rawAudio'
+    );
+
+    ///update UI every 0.1 seconds
+    Timer.periodic(Duration(milliseconds: 100), (timer) {
+      setState(() {
+      });
+    });
+
   }
+
+
+  void getResult() {
+
+    ///Recording & Recognition
+    recognitionStream = TfliteAudio.startAudioRecognition(
+      sampleRate: sampleRate,
+      bufferSize: bufferSize,
+      numOfInferences: numOfInferences,
+
+    );
+
+    ///Listen for results
+    recognitionStream
+        ?.listen((event) =>
+    result=event["recognitionResult"].toString()//giving the recognised result to  the string result
+    )
+        .onDone(() => (isRecording.value = false));
+  }
+
+
+
 
   Future<void> getCurrentUserDOB() async {
     final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -74,6 +141,12 @@ class _ChildModeState extends State<ChildMode> {
 
   @override
   Widget build(BuildContext context) {
+
+    /// variables that depends on isRecording.value
+    final colorStatus= isRecording.value? Colors.green : Colors.red;
+    final String mode= isRecording.value?'Listening':'LISTEN MODE';
+    final textStatus= isRecording.value?'Active':'Inactive';
+
     return Scaffold(
       backgroundColor: primary,
       body: Column(
@@ -179,7 +252,7 @@ class _ChildModeState extends State<ChildMode> {
               ),
               SizedBox(width: 20),
               Text(
-                "Active",
+                textStatus,
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 16,
@@ -194,7 +267,7 @@ class _ChildModeState extends State<ChildMode> {
                           color: Colors.white
                       ),
                       borderRadius: BorderRadius.circular(90.0),
-                      color: Colors.green
+                      color: colorStatus
                   )
               )
             ],
@@ -202,25 +275,45 @@ class _ChildModeState extends State<ChildMode> {
           SizedBox(height: 30),
           ElevatedButton(
             style: ElevatedButton.styleFrom(
+
                 backgroundColor: orange,
                 padding: EdgeInsets.symmetric(vertical: 15),
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(30))),
-            onPressed:()async{},
+
+            onPressed:()async{
+              if(isRecording.value){
+                log('Audio Recognition Stopped');
+                TfliteAudio.stopAudioRecognition();//stop audio recognition if button is pressed while listening
+                isRecording.value=false;
+              }else{
+                isRecording.value=true;
+                getResult();//start recording and recognition procedure
+              }
+            },
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
                 Icon(Icons.family_restroom),
                 SizedBox(width: 35),
                 Text(
-                  " LISTEN MODE ",
+                  mode,
                   //_isListening ? 'Stop Listening' : 'Start Listening',
                   //style: TextStyle(fontSize: 18),
                 ),
               ],
             ),
           ),
+          SizedBox(height: 30),
+          Text(
+            result,
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 16,
+            ),
+          ),
         ],
+
       ),
     );
   }

@@ -40,6 +40,7 @@ dependencies:
   firebase_core: ^2.4.1
   email_validator: ^2.0.1
   syncfusion_flutter_charts: ^20.4.51
+  tflite_audio: ^0.3.0
 
 dev_dependencies:
   flutter_test:
