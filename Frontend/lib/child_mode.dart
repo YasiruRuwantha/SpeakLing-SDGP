@@ -294,12 +294,16 @@ class _ChildModeState extends State<ChildMode> {
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Icon(Icons.family_restroom),
-                SizedBox(width: 35),
-                Text(
-                  mode,
-                  //_isListening ? 'Stop Listening' : 'Start Listening',
-                  //style: TextStyle(fontSize: 18),
+                Padding(
+                  padding: EdgeInsets.all(15),
+                    child: Icon(Icons.family_restroom)),
+                Padding(
+                  padding: EdgeInsets.all(15),
+                  child: Text(
+                    mode,
+                    //_isListening ? 'Stop Listening' : 'Start Listening',
+                    //style: TextStyle(fontSize: 18),
+                  ),
                 ),
               ],
             ),
