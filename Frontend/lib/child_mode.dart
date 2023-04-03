@@ -46,7 +46,8 @@ class _ChildModeState extends State<ChildMode> {
   String fName = '';
   String lName = '';
   String speechLevel = '';
-  String result='result';
+  String result='Result Here';
+  List resultList =[];
 
   @override
   void initState() {
@@ -69,10 +70,10 @@ class _ChildModeState extends State<ChildMode> {
   }
 
 
-  void getResult() {
+  Future<void> getResult() async {
 
     ///Recording & Recognition
-    recognitionStream = TfliteAudio.startAudioRecognition(
+    recognitionStream = await TfliteAudio.startAudioRecognition(
       sampleRate: sampleRate,
       bufferSize: bufferSize,
       numOfInferences: numOfInferences,
@@ -81,14 +82,16 @@ class _ChildModeState extends State<ChildMode> {
 
     ///Listen for results
     recognitionStream
-        ?.listen((event) =>
-    result=event["recognitionResult"].toString()//giving the recognised result to  the string result
-    )
-        .onDone(() => (isRecording.value = false));
+        ?.listen((event) => result = event["recognitionResult"]
+            .toString()) //giving the recognised result to  the string result
+        .onDone(() {
+      isRecording.value = false;
+      if (result != 'Result Here') resultList.add(result);
+      setState(() {
+        result = 'Result Here';
+      });
+    });
   }
-
-
-
 
   Future<void> getCurrentUserDOB() async {
     final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -275,20 +278,23 @@ class _ChildModeState extends State<ChildMode> {
           SizedBox(height: 30),
           ElevatedButton(
             style: ElevatedButton.styleFrom(
-
                 backgroundColor: orange,
                 padding: EdgeInsets.symmetric(vertical: 15),
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(30))),
 
-            onPressed:()async{
+            onPressed:() async {
               if(isRecording.value){
+                if (result!="Result Here") resultList.add(result);
+                setState(() {
+                  result='Result Here';
+                });
                 log('Audio Recognition Stopped');
                 TfliteAudio.stopAudioRecognition();//stop audio recognition if button is pressed while listening
                 isRecording.value=false;
               }else{
                 isRecording.value=true;
-                getResult();//start recording and recognition procedure
+                await getResult();//start recording and recognition procedure
               }
             },
             child: Row(
@@ -317,7 +323,6 @@ class _ChildModeState extends State<ChildMode> {
             ),
           ),
         ],
-
       ),
     );
   }
