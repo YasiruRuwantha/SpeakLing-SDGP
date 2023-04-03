@@ -3,7 +3,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend/constants.dart';
 import 'package:frontend/forgot_password.dart';
-import 'package:frontend/main.dart';
 import 'package:frontend/signup_1.dart';
 
 import 'Utils.dart';
@@ -57,12 +56,6 @@ class _LoginFormState extends State<LoginForm> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               SizedBox(height: 50),
-              Align(
-                alignment: Alignment.topLeft,
-                child: BackButton(
-                  color: Colors.white,
-                ),
-              ),
               Text(
                 "Welcome back,",
                 style: TextStyle(

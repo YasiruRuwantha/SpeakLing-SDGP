@@ -45,103 +45,73 @@ class _ForgotPasswordState extends State<ForgotPassword> {
         ),
           child: Form(
             key: formKey,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Padding(
-                  padding:
-                  const EdgeInsets.symmetric(vertical: 50, horizontal: 35),
-                  child: Image.asset("assets/logo.png"),
-                ),
-                SizedBox(height: 30),
-
-                //email
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 40),
-                    child: Text(
-                      "Email",
-                      style: TextStyle(color: Colors.white, fontSize: 16),
-                    ),
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Padding(
+                    padding:
+                    const EdgeInsets.symmetric(vertical: 50, horizontal: 35),
+                    child: Image.asset("assets/logo.png"),
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
-                  child: TextFormField(
-                    controller:userEmail,
-                    decoration: InputDecoration(
-                        contentPadding: EdgeInsets.symmetric(horizontal: 20),
-                        hintText: "Input your email",
-                        filled: true,
-                        fillColor: Colors.white,
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(30),
-                            borderSide: BorderSide.none)),
-                    autovalidateMode: AutovalidateMode.onUserInteraction,
-                    validator: (email) => UserEmailValidator.validate(email!),
-                  ),
-                ),
+                  SizedBox(height: 30),
 
-                SizedBox(height: 40),
-
-                //button
-                Padding(
-                  padding: const EdgeInsets.only(right: 30),
-                  child: Align(
-                    alignment: Alignment.centerRight,
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                          backgroundColor: lightBlue,
-                          padding: EdgeInsets.symmetric(vertical: 15, horizontal: 30),
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(30))),
-                      onPressed: resetPassword,
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Text(
-                            "Reset Password",
-                            style: TextStyle(fontSize: 18),
-                          ),
-                          SizedBox(width: 15),
-                          Icon(Icons.arrow_forward_ios),
-                        ],
+                  //email
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 40),
+                      child: Text(
+                        "Email",
+                        style: TextStyle(color: Colors.white, fontSize: 16),
                       ),
                     ),
                   ),
-                ),
-               /* SizedBox(height: 30),
-                Padding(
-                  padding: const EdgeInsets.only(right: 30),
-                  child: Align(
-                    alignment: Alignment.centerRight,
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                          backgroundColor: lightBlue,
-                          padding: EdgeInsets.symmetric(vertical: 15, horizontal: 30),
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(30))),
-                      onPressed:(){
-                          Navigator.push(context, MaterialPageRoute(builder: (context) {
-                            return LoginForm();
-                          }));
-                      },
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Text(
-                            "Login",
-                            style: TextStyle(fontSize: 18),
-                          ),
-                          SizedBox(width: 15),
-                          Icon(Icons.arrow_forward_ios),
-                        ],
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
+                    child: TextFormField(
+                      controller:userEmail,
+                      decoration: InputDecoration(
+                          contentPadding: EdgeInsets.symmetric(horizontal: 20),
+                          hintText: "Input your email",
+                          filled: true,
+                          fillColor: Colors.white,
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(30),
+                              borderSide: BorderSide.none)),
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      validator: (email) => UserEmailValidator.validate(email!),
+                    ),
+                  ),
+                  SizedBox(height: 40),
+                  //button
+                  Padding(
+                    padding: const EdgeInsets.all(25),
+                    child: Align(
+                      alignment: Alignment.centerRight,
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: lightBlue,
+                            padding: EdgeInsets.symmetric(vertical: 15, horizontal: 30),
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(30))),
+                        onPressed: resetPassword,
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text(
+                              "Reset Password",
+                              style: TextStyle(fontSize: 18),
+                            ),
+                            SizedBox(width: 15),
+                            Icon(Icons.arrow_forward_ios),
+                          ],
+                        ),
                       ),
                     ),
                   ),
-                ),*/
-              ],
+                ],
+              ),
             ),
           ),
         ),

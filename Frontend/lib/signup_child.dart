@@ -284,11 +284,6 @@ class _SignupChildState extends State<SignupChild> {
     );
   }
 
-  /*Stream<List<User>> readUser() => FirebaseFirestore.instance
-      .collection('User_Collection')
-      .snapshots()
-      .map((snapshot) => snapshot.docs.map((doc) => User.fromJson(doc.data())).toList());*/
-
   Future createUser() async {
     final isValid = formKey.currentState!.validate();
     //var firebaseUser = await FirebaseAuth.instance.currentUser();
