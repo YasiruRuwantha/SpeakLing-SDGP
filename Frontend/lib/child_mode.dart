@@ -6,8 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:frontend/constants.dart';
 import 'package:tflite_audio/tflite_audio.dart';
 
-
-
 class ChildMode extends StatefulWidget {
   const ChildMode({Key? key}) : super(key: key);
 
@@ -16,21 +14,21 @@ class ChildMode extends StatefulWidget {
 }
 
 class _ChildModeState extends State<ChildMode> {
-
   final isRecording = ValueNotifier<bool>(false);
-  Stream<Map<dynamic, dynamic>>? recognitionStream;//Declare stream value
+  Stream<Map<dynamic, dynamic>>? recognitionStream; //Declare stream value
 
   ///values for google's teachable machine model
-  final String model = 'assets/speakling-speech.tflite'; //path to model(.tflite) file
+  final String model =
+      'assets/speakling-speech.tflite'; //path to model(.tflite) file
   final String label = 'assets/speak.txt'; //path to labels(.txt) file
   final String inputType = 'rawAudio';
   final int sampleRate = 44100;
   final int bufferSize = 11016;
 
-
   ///Optional parameters you can adjust to modify your input and output
   final bool outputRawScores = false;
-  final int numOfInferences = 10; //10 recording(1s to 2s) rounds per one click on "LISTEN MODE"
+  final int numOfInferences =
+      10; //10 recording(1s to 2s) rounds per one click on "LISTEN MODE"
   final int numThreads = 1;
   final bool isAsset = true;
 
@@ -40,14 +38,13 @@ class _ChildModeState extends State<ChildMode> {
   final int minimumTimeBetweenSamples = 30;
   final int suppressionTime = 1500;
 
-
 ///////ADD THE DETAILSSSSSSSSS
   String userDOB = '';
   String fName = '';
   String lName = '';
   String speechLevel = '';
-  String result='Result Here';
-  List resultList =[];
+  String result = 'Result Here';
+  List resultList = [];
 
   @override
   void initState() {
@@ -55,29 +52,20 @@ class _ChildModeState extends State<ChildMode> {
     getCurrentUserDOB();
 
     ///load Tflite_audio model
-    TfliteAudio.loadModel(
-        model: model,
-        label: label,
-        inputType: 'rawAudio'
-    );
+    TfliteAudio.loadModel(model: model, label: label, inputType: 'rawAudio');
 
     ///update UI every 0.1 seconds
     Timer.periodic(Duration(milliseconds: 100), (timer) {
-      setState(() {
-      });
+      setState(() {});
     });
-
   }
 
-
   Future<void> getResult() async {
-
     ///Recording & Recognition
     recognitionStream = await TfliteAudio.startAudioRecognition(
       sampleRate: sampleRate,
       bufferSize: bufferSize,
       numOfInferences: numOfInferences,
-
     );
 
     ///Listen for results
@@ -106,8 +94,8 @@ class _ChildModeState extends State<ChildMode> {
     }
 
     // Fetch the user's document from Firestore using their uid
-    DocumentReference userDocRef = _firestore.collection('User_Collection').doc(
-        currentUser.uid);
+    DocumentReference userDocRef =
+        _firestore.collection('User_Collection').doc(currentUser.uid);
     DocumentSnapshot userDocSnapshot = await userDocRef.get();
 
     if (!userDocSnapshot.exists) {
@@ -132,7 +120,6 @@ class _ChildModeState extends State<ChildMode> {
     }
   }
 
-
   //Interpreter _interpreter;
 
   /* @override
@@ -141,14 +128,12 @@ class _ChildModeState extends State<ChildMode> {
     loadModel();
   }*/
 
-
   @override
   Widget build(BuildContext context) {
-
     /// variables that depends on isRecording.value
-    final colorStatus= isRecording.value? Colors.green : Colors.red;
-    final String mode= isRecording.value?'Listening':'LISTEN MODE';
-    final textStatus= isRecording.value?'Active':'Inactive';
+    final colorStatus = isRecording.value ? Colors.green : Colors.red;
+    final String mode = isRecording.value ? 'Listening' : 'LISTEN MODE';
+    final textStatus = isRecording.value ? 'Active' : 'Inactive';
 
     return Scaffold(
       backgroundColor: primary,
@@ -201,34 +186,27 @@ class _ChildModeState extends State<ChildMode> {
                 padding: const EdgeInsets.all(30),
                 child: Column(
                   children: [
-                    Stack(
-                        children: [
-                          CircleAvatar(
-                            backgroundImage: AssetImage("assets/child.jpg"),
-                            radius: 55,
-                          ),
-                          Positioned(
-                              right: 10,
-                              bottom: 0,
-                              child: Container(
-                                  padding: EdgeInsets.all(7.5),
-                                  decoration: BoxDecoration(
-                                      border: Border.all(
-                                          width: 2,
-                                          color: Colors.white
-                                      ),
-                                      borderRadius: BorderRadius.circular(90.0),
-                                      color: Colors.green
-                                  )
-                              )
-                          )
-                        ]
-                    ),
+                    Stack(children: [
+                      CircleAvatar(
+                        backgroundImage: AssetImage("assets/child.jpg"),
+                        radius: 55,
+                      ),
+                      Positioned(
+                          right: 10,
+                          bottom: 0,
+                          child: Container(
+                              padding: EdgeInsets.all(7.5),
+                              decoration: BoxDecoration(
+                                  border:
+                                      Border.all(width: 2, color: Colors.white),
+                                  borderRadius: BorderRadius.circular(90.0),
+                                  color: Colors.green)))
+                    ]),
                     SizedBox(height: 30),
                     Text(
                       "Name: $fName $lName\n"
-                          "DOB: $userDOB\n"
-                          "Speech Level: $speechLevel",
+                      "DOB: $userDOB\n"
+                      "Speech Level: $speechLevel",
                       style: TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
@@ -240,7 +218,6 @@ class _ChildModeState extends State<ChildMode> {
               ),
             ),
           ),
-
           Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
@@ -265,43 +242,38 @@ class _ChildModeState extends State<ChildMode> {
               Container(
                   padding: EdgeInsets.all(6),
                   decoration: BoxDecoration(
-                      border: Border.all(
-                          width: 2,
-                          color: Colors.white
-                      ),
+                      border: Border.all(width: 2, color: Colors.white),
                       borderRadius: BorderRadius.circular(90.0),
-                      color: colorStatus
-                  )
-              )
+                      color: colorStatus))
             ],
           ),
           SizedBox(height: 30),
           ElevatedButton(
             style: ElevatedButton.styleFrom(
                 backgroundColor: orange,
-                padding: EdgeInsets.symmetric(vertical: 15),
+                padding: EdgeInsets.symmetric(vertical: 6, horizontal: 80),
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(30))),
-
-            onPressed:() async {
-              if(isRecording.value){
-                if (result!="Result Here") resultList.add(result);
+            onPressed: () async {
+              if (isRecording.value) {
+                if (result != "Result Here") resultList.add(result);
                 setState(() {
-                  result='Result Here';
+                  result = 'Result Here';
                 });
                 log('Audio Recognition Stopped');
-                TfliteAudio.stopAudioRecognition();//stop audio recognition if button is pressed while listening
-                isRecording.value=false;
-              }else{
-                isRecording.value=true;
-                await getResult();//start recording and recognition procedure
+                TfliteAudio
+                    .stopAudioRecognition(); //stop audio recognition if button is pressed while listening
+                isRecording.value = false;
+              } else {
+                isRecording.value = true;
+                await getResult(); //start recording and recognition procedure
               }
             },
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
                 Padding(
-                  padding: EdgeInsets.all(15),
+                    padding: EdgeInsets.all(15),
                     child: Icon(Icons.family_restroom)),
                 Padding(
                   padding: EdgeInsets.all(15),
