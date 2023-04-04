@@ -197,12 +197,27 @@ class _LoginFormState extends State<LoginForm> {
                   ),
                 ],
               ),
+              GestureDetector(
+                onTap: (){
+                  
+                },
+                child: Padding(
+                  padding: EdgeInsets.symmetric(vertical: 30),
+                  child: Image.network(
+                    'https://i0.wp.com/nanophorm.com/wp-content/uploads/2018/04/google-logo-icon-PNG-Transparent-Background.png?w=1000&ssl=1',
+                    width: 45,
+                    height: 45,
+                  ),
+                ),
+              ),
             ],
           ),
         ),
       ),
     );
   }
+
+
 
   Future logIn() async{
     try{
