@@ -179,9 +179,9 @@ class FullReport extends StatelessWidget {
                       series: <CircularSeries<BarChartModel, String>>[
                         DoughnutSeries<BarChartModel, String>(
                           dataSource: <BarChartModel>[
-                            BarChartModel("Mommy", 38),
-                            BarChartModel("Daddy", 36),
-                            BarChartModel("Other", 25),
+                            BarChartModel("two", 38),
+                            BarChartModel("one", 36),
+                            BarChartModel("other", 25),
                           ],
                           xValueMapper: (BarChartModel sales, _) => sales.time,
                           yValueMapper: (BarChartModel sales, _) => sales.noOfWords,
@@ -205,9 +205,11 @@ class FullReport extends StatelessWidget {
                           EdgeInsets.symmetric(vertical: 15, horizontal: 20),
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(30))),
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
                   child: Text(
-                    "More",
+                    "Back",
                     style: TextStyle(fontSize: 14),
                   ),
                 ),

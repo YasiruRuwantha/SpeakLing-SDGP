@@ -8,11 +8,11 @@ class DailyReport extends StatelessWidget {
   DailyReport({Key? key}) : super(key: key);
 
   final List<BarChartModel> _barChartList = [
-    BarChartModel('8:00', 2),
-    BarChartModel('10:00', 4),
-    BarChartModel('12:00', 2),
-    BarChartModel('14:00', 5),
-    BarChartModel('16:00', 5),
+    BarChartModel('no', 2),
+    BarChartModel('yes', 4),
+    BarChartModel('one', 2),
+    BarChartModel('three', 5),
+    BarChartModel('two', 5),
   ];
 
   @override

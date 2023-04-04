@@ -2,10 +2,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend/child_mode.dart';
 import 'package:frontend/constants.dart';
-import 'package:frontend/login.dart';
 import 'package:frontend/login_form.dart';
 import 'package:frontend/parent_mode.dart';
-import 'package:frontend/signup_child.dart';
 
 import 'Utils.dart';
 
@@ -120,6 +118,8 @@ class SelectMode extends StatelessWidget {
                     onPressed: () {
                       Utils.showSnackBarGreen('Signing out!');
                       FirebaseAuth.instance.signOut();
+                      Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>
+                          LoginForm()), (Route<dynamic> route) => false);
                       },
                     child: Row(
                       mainAxisSize: MainAxisSize.min,

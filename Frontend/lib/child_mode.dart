@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend/constants.dart';
 import 'package:tflite_audio/tflite_audio.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ChildMode extends StatefulWidget {
   const ChildMode({Key? key}) : super(key: key);
@@ -24,6 +25,11 @@ class _ChildModeState extends State<ChildMode> {
   final String inputType = 'rawAudio';
   final int sampleRate = 44100;
   final int bufferSize = 11016;
+
+  // Get the current date and time
+  DateTime currentDate = DateTime.now();
+  late DateTime _lastLoginDate;
+
 
   ///Optional parameters you can adjust to modify your input and output
   final bool outputRawScores = false;
@@ -50,7 +56,8 @@ class _ChildModeState extends State<ChildMode> {
   void initState() {
     super.initState();
     getCurrentUserDOB();
-
+    _getLastLoginDate();
+    
     ///load Tflite_audio model
     TfliteAudio.loadModel(model: model, label: label, inputType: 'rawAudio');
 
@@ -79,6 +86,11 @@ class _ChildModeState extends State<ChildMode> {
         result = 'Result Here';
       });
     });
+  }
+
+  void dispose() {
+    _updateLastLoginDate();
+    super.dispose();
   }
 
   Future<void> getCurrentUserDOB() async {
@@ -119,14 +131,6 @@ class _ChildModeState extends State<ChildMode> {
       print('Error: DOB field not found or set to null');
     }
   }
-
-  //Interpreter _interpreter;
-
-  /* @override
-  void initState() {
-    super.initState();
-    loadModel();
-  }*/
 
   @override
   Widget build(BuildContext context) {
@@ -247,7 +251,7 @@ class _ChildModeState extends State<ChildMode> {
                       color: colorStatus))
             ],
           ),
-          SizedBox(height: 30),
+          SizedBox(height: 70),
           ElevatedButton(
             style: ElevatedButton.styleFrom(
                 backgroundColor: orange,
@@ -279,23 +283,52 @@ class _ChildModeState extends State<ChildMode> {
                   padding: EdgeInsets.all(15),
                   child: Text(
                     mode,
-                    //_isListening ? 'Stop Listening' : 'Start Listening',
-                    //style: TextStyle(fontSize: 18),
                   ),
                 ),
               ],
             ),
           ),
-          SizedBox(height: 30),
+          SizedBox(height: 50),
           Text(
             result,
             style: TextStyle(
               color: Colors.white,
-              fontSize: 16,
+              fontSize: 18,
+              fontWeight: FontWeight.w500,
             ),
           ),
         ],
       ),
     );
   }
+
+  Future<void> _getLastLoginDate() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _lastLoginDate = DateTime.parse(prefs.getString('lastLoginDate') ?? '2000-01-01');
+      if (currentDate.isAfter(_lastLoginDate)) {
+        resultList = ["two,one"];
+      } else {
+        resultList = [];
+      }
+    });
+  }
+
+  Future<void> _updateLastLoginDate() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString('lastLoginDate', DateTime.now().toString());
+    setState(() {
+      _lastLoginDate = DateTime.now();
+    });
+  }
+
+  // void _isNewLogin() {
+  //   if (currentDate.isAfter(_lastLoginDate)) {
+  //     resultList = ["two,one"];
+  //   } else {
+  //     resultList = [];
+  //   }
+  // }
+
+
 }

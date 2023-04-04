@@ -41,6 +41,7 @@ dependencies:
   email_validator: ^2.0.1
   syncfusion_flutter_charts: ^20.4.51
   tflite_audio: ^0.3.0
+  shared_preferences: ^2.0.12
 
 dev_dependencies:
   flutter_test:

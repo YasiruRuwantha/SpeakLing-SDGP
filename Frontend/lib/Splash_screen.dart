@@ -1,58 +1,56 @@
-import 'dart:async';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
-import 'package:flutter/services.dart';
 import 'package:frontend/select_mode.dart';
 
 import 'login_form.dart';
 
-class SplashScreenWidget extends StatefulWidget {
-  const SplashScreenWidget({Key? key}) : super(key: key);
+class SplashScreen extends StatefulWidget {
+  const SplashScreen({Key? key}) : super(key: key);
 
   @override
-  _HomePageWidgetState createState() => _HomePageWidgetState();
+  SplashScreenState createState() => SplashScreenState();
 }
-
-class _HomePageWidgetState extends State<SplashScreenWidget> {
+class SplashScreenState extends State<SplashScreen> {
 
   @override
   void initState() {
     super.initState();
-  }
-
-
-  @override
-  Widget build(BuildContext context) {
-    Future.delayed(Duration(seconds: 3), () {
+    Future.delayed(const Duration(seconds: 2), () {
       // Navigate to the new page using pushReplacementNamed
       User? user = FirebaseAuth.instance.currentUser;
       if (user == null) {
-        // Navigator.of(context).push(MaterialPageRoute(builder: (context) => LoginForm()));
-        Navigator.push(context, MaterialPageRoute(builder: (context) {return LoginForm();}));
+        Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>
+            LoginForm()), (Route<dynamic> route) => false);
       } else {
-        Navigator.push(context, MaterialPageRoute(builder: (context) {return SelectMode();}));
+        Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>
+            SelectMode()), (Route<dynamic> route) => false);
       }
-    });
 
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: Container(
-          width: double.infinity,
-          height: double.infinity,
-          decoration: BoxDecoration(
-            image: DecorationImage(
-                image: AssetImage("assets/background.jpeg"), fit: BoxFit.cover),
-          ),
-          child: Column(
+      backgroundColor: Colors.grey[300],
+      body: Container(
+        decoration: BoxDecoration(
+          image: DecorationImage(
+              image: AssetImage("assets/background.jpeg"), fit: BoxFit.cover),
+        ),
+        child: SafeArea(
+          child: Container(
+            height: double.infinity,
+            width: double.infinity,
+            child: Column(
             mainAxisSize: MainAxisSize.max,
             children: [
               Padding(
-                padding:
-                EdgeInsetsDirectional.fromSTEB(0.0, 200.0, 0.0, 0.0),
-                child: Image.asset("assets/logo.png")
+                  padding:
+                  EdgeInsetsDirectional.fromSTEB(0.0, 200.0, 0.0, 0.0),
+                  child: Image.asset("assets/logo.png",
+                  height: 200,width: 340)
               ),
               Padding(
                 padding:
@@ -70,9 +68,8 @@ class _HomePageWidgetState extends State<SplashScreenWidget> {
               ),
             ],
           ),
-        ),
-      ),
+          ),
+        ),),
     );
   }
-
 }

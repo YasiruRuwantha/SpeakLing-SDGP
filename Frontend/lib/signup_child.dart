@@ -306,9 +306,8 @@ class _SignupChildState extends State<SignupChild> {
 
         final json = user.toJson();
         Utils.showSnackBarGreen('Data has been saved successfully');
-        Navigator.push(context, MaterialPageRoute(builder: (context) {
-          return SelectMode();
-        }));
+        Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>
+            SelectMode()), (Route<dynamic> route) => false);
         await addUser.set(json);
       } on FirebaseAuthException catch (error){
         Utils.showSnackBarRed(error.message);

@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend/constants.dart';
 import 'package:frontend/forgot_password.dart';
+import 'package:frontend/select_mode.dart';
 import 'package:frontend/signup_1.dart';
 
 import 'Utils.dart';
@@ -210,6 +211,8 @@ class _LoginFormState extends State<LoginForm> {
           email: email,
           password: userPassword.text.trim()
       );
+      Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>
+          SelectMode()), (Route<dynamic> route) => false);
       Utils.showSnackBarGreen('Log in successful as $email');
     } on FirebaseAuthException catch(error){
       Utils.showSnackBarRed(error.message);
