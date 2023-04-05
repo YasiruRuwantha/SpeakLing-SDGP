@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:frontend/constants.dart';
 import 'package:frontend/models/bar_chart_model.dart';
@@ -45,8 +43,7 @@ class FullReport extends StatelessWidget {
     } else {
       double word1 = (((wordList[0]['count']) / resultList.length) * 100);
       double word2 = (((wordList[1]['count']) / resultList.length) * 100);
-      print(word1);
-      print(word2);
+
       circleChart = [
         BarChartModel(wordList[0]['word'], word1.round()),
         BarChartModel(wordList[1]['word'], word2.round()),

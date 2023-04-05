@@ -78,13 +78,15 @@ class _ChildModeState extends State<ChildMode> {
     recognitionStream?.listen((event) {
       setState(() {
         result = event["recognitionResult"].toString();
+        if (result=="background"){
+          result="Background Noise";
+        }
       });
     }).onDone(() {
       // Do something when recognition is done
       isRecording.value = false;
-      if (result != 'Result Here') resultList.add(result);
+      if ((result != 'Result Here')&&(result != 'background')) resultList.add(result);
       saveData();
-      print(resultList);
       setState(() {
         result = 'Result Here';
       });
@@ -263,8 +265,7 @@ class _ChildModeState extends State<ChildMode> {
                     borderRadius: BorderRadius.circular(30))),
             onPressed: () async {
               if (isRecording.value) {
-                print(resultList);
-                if (result != "Result Here") resultList.add(result);
+                if ((result != 'Result Here')&&(result != 'background')) resultList.add(result);
                 await saveData();
                 setState(() {
                   result = 'Result Here';
