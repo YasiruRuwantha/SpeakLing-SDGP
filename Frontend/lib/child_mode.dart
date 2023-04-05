@@ -30,7 +30,6 @@ class _ChildModeState extends State<ChildMode> {
   DateTime currentDate = DateTime.now();
   late DateTime _lastLoginDate;
 
-
   ///Optional parameters you can adjust to modify your input and output
   final bool outputRawScores = false;
   final int numOfInferences =
@@ -57,14 +56,14 @@ class _ChildModeState extends State<ChildMode> {
     super.initState();
     getCurrentUserDOB();
     _getLastLoginDate();
-    
+
     ///load Tflite_audio model
     TfliteAudio.loadModel(model: model, label: label, inputType: 'rawAudio');
 
     ///update UI every 0.1 seconds
-    Timer.periodic(Duration(milliseconds: 100), (timer) {
-      setState(() {});
-    });
+    // Timer.periodic(Duration(milliseconds: 100), (timer) {
+    //   setState(() {});
+    // });
   }
 
   Future<void> getResult() async {
@@ -76,28 +75,35 @@ class _ChildModeState extends State<ChildMode> {
     );
 
     ///Listen for results
-    recognitionStream
-        ?.listen((event) => result = event["recognitionResult"]
-            .toString()) //giving the recognised result to  the string result
-        .onDone(() {
+    recognitionStream?.listen((event) {
+      setState(() {
+        result = event["recognitionResult"].toString();
+      });
+    }).onDone(() {
+      // Do something when recognition is done
       isRecording.value = false;
       if (result != 'Result Here') resultList.add(result);
+      saveData();
+      print(resultList);
       setState(() {
         result = 'Result Here';
       });
     });
   }
 
+  @override
   void dispose() {
     _updateLastLoginDate();
     super.dispose();
   }
 
+  User? currentUser;
+
   Future<void> getCurrentUserDOB() async {
     final FirebaseFirestore _firestore = FirebaseFirestore.instance;
     final FirebaseAuth _auth = FirebaseAuth.instance;
     // Get the current user
-    User? currentUser = _auth.currentUser;
+    currentUser = _auth.currentUser;
 
     if (currentUser == null) {
       // No user is signed in
@@ -107,7 +113,7 @@ class _ChildModeState extends State<ChildMode> {
 
     // Fetch the user's document from Firestore using their uid
     DocumentReference userDocRef =
-        _firestore.collection('User_Collection').doc(currentUser.uid);
+        _firestore.collection('User_Collection').doc(currentUser?.uid);
     DocumentSnapshot userDocSnapshot = await userDocRef.get();
 
     if (!userDocSnapshot.exists) {
@@ -135,9 +141,6 @@ class _ChildModeState extends State<ChildMode> {
   @override
   Widget build(BuildContext context) {
     /// variables that depends on isRecording.value
-    final colorStatus = isRecording.value ? Colors.green : Colors.red;
-    final String mode = isRecording.value ? 'Listening' : 'LISTEN MODE';
-    final textStatus = isRecording.value ? 'Active' : 'Inactive';
 
     return Scaffold(
       backgroundColor: primary,
@@ -236,7 +239,7 @@ class _ChildModeState extends State<ChildMode> {
               ),
               SizedBox(width: 20),
               Text(
-                textStatus,
+                isRecording.value ? 'Active' : 'Inactive',
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 16,
@@ -248,7 +251,7 @@ class _ChildModeState extends State<ChildMode> {
                   decoration: BoxDecoration(
                       border: Border.all(width: 2, color: Colors.white),
                       borderRadius: BorderRadius.circular(90.0),
-                      color: colorStatus))
+                      color: isRecording.value ? Colors.green : Colors.red))
             ],
           ),
           SizedBox(height: 70),
@@ -260,16 +263,22 @@ class _ChildModeState extends State<ChildMode> {
                     borderRadius: BorderRadius.circular(30))),
             onPressed: () async {
               if (isRecording.value) {
+                print(resultList);
                 if (result != "Result Here") resultList.add(result);
+                await saveData();
                 setState(() {
                   result = 'Result Here';
                 });
                 log('Audio Recognition Stopped');
                 TfliteAudio
                     .stopAudioRecognition(); //stop audio recognition if button is pressed while listening
-                isRecording.value = false;
+                setState(() {
+                  isRecording.value = false;
+                });
               } else {
-                isRecording.value = true;
+                setState(() {
+                  isRecording.value = true;
+                });
                 await getResult(); //start recording and recognition procedure
               }
             },
@@ -282,7 +291,7 @@ class _ChildModeState extends State<ChildMode> {
                 Padding(
                   padding: EdgeInsets.all(15),
                   child: Text(
-                    mode,
+                    isRecording.value ? 'Listening' : 'LISTEN MODE',
                   ),
                 ),
               ],
@@ -304,31 +313,62 @@ class _ChildModeState extends State<ChildMode> {
 
   Future<void> _getLastLoginDate() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    setState(() {
-      _lastLoginDate = DateTime.parse(prefs.getString('lastLoginDate') ?? '2000-01-01');
-      if (currentDate.isAfter(_lastLoginDate)) {
-        resultList = ["two,one"];
-      } else {
-        resultList = [];
-      }
-    });
+    _lastLoginDate =
+        DateTime.parse(prefs.getString('lastLoginDate') ?? '2000-01-01');
+
+    String formattedCurrentDate =
+        "${currentDate.year}-${currentDate.month.toString().padLeft(2, '0')}-${currentDate.day.toString().padLeft(2, '0')}";
+    String formattedLastDate =
+        "${_lastLoginDate.year}-${_lastLoginDate.month.toString().padLeft(2, '0')}-${_lastLoginDate.day.toString().padLeft(2, '0')}";
+
+    if (formattedLastDate.compareTo(formattedCurrentDate) < 0) {
+      print("new Day");
+      resultList = [];
+    } else {
+      print("today");
+      resultList = await getData();
+      print(resultList);
+    }
   }
 
   Future<void> _updateLastLoginDate() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString('lastLoginDate', DateTime.now().toString());
-    setState(() {
-      _lastLoginDate = DateTime.now();
-    });
+    _lastLoginDate = DateTime.now();
+    print(_lastLoginDate);
   }
 
-  // void _isNewLogin() {
-  //   if (currentDate.isAfter(_lastLoginDate)) {
-  //     resultList = ["two,one"];
-  //   } else {
-  //     resultList = [];
-  //   }
-  // }
+  saveData() {
+    Map<String, dynamic> data = {"speak_word": resultList};
 
+    FirebaseFirestore.instance
+        .collection("Speaker_words")
+        .doc(currentUser?.email)
+        .set(data);
+  }
 
+  Future<List> getData() async {
+    // Get a reference to the Firestore collection and document
+    final collectionRef =
+        FirebaseFirestore.instance.collection("Speaker_words");
+    final documentRef = collectionRef.doc(currentUser?.email);
+
+    // Retrieve the document snapshot
+    final docSnapshot = await documentRef.get();
+
+    // Check if the document exists
+    if (docSnapshot.exists) {
+      // Get the array from the document data
+      final arrayData = docSnapshot.get("speak_word");
+
+      // Convert the array to a list
+      final List<dynamic> arrayAsList = List<dynamic>.from(arrayData);
+
+      return arrayAsList;
+    } else {
+      // throw Exception('Document does not exist');
+
+      return [];
+    }
+  }
 }
