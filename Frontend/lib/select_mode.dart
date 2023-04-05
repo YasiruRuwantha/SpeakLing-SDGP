@@ -4,7 +4,6 @@ import 'package:frontend/child_mode.dart';
 import 'package:frontend/constants.dart';
 import 'package:frontend/login_form.dart';
 import 'package:frontend/parent_mode.dart';
-
 import 'Utils.dart';
 
 class SelectMode extends StatelessWidget {

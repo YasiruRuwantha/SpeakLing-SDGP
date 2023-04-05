@@ -111,38 +111,6 @@ class _Signup1State extends State<Signup1> {
                     validator: (email) => UserEmailValidator.validate(email!),
                   ),
                 ),
-
-
-                //username
-                /*
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 40),
-                    child: Text(
-                      "Username",
-                      style: TextStyle(color: Colors.white, fontSize: 16),
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
-                  child: TextFormField(
-                    decoration: InputDecoration(
-                        contentPadding: EdgeInsets.symmetric(horizontal: 20),
-                        hintText: "Input your username",
-                        filled: true,
-                        fillColor: Colors.white,
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(30),
-                            borderSide: BorderSide.none)),
-                    autovalidateMode: AutovalidateMode.onUserInteraction,
-                    validator: (username) => username == null || username == ''
-                        ? 'Username cannot be empty!'
-                        : null,
-                  ),
-                ),*/
-
                 //password
                 Align(
                   alignment: Alignment.centerLeft,
@@ -243,9 +211,6 @@ class _Signup1State extends State<Signup1> {
                               borderRadius: BorderRadius.circular(30))),
                       onPressed:(){
                         if(isDisable){
-                          /* Navigator.push(context, MaterialPageRoute(builder: (context) {
-                          return SignupParent();
-                        }));*/
                           Navigator.push(
                             context,
                             MaterialPageRoute(
