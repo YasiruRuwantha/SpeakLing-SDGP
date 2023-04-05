@@ -7,7 +7,8 @@ import 'package:syncfusion_flutter_charts/charts.dart';
 class DailyReport extends StatelessWidget {
   final List<dynamic> resultList;
   final List<dynamic> wordList;
-  const DailyReport(this.resultList, this.wordList, {Key? key}) : super(key: key);
+  final List<dynamic> barchartList;
+  const DailyReport(this.resultList, this.wordList, this.barchartList, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -166,7 +167,7 @@ class DailyReport extends StatelessWidget {
                           borderRadius: BorderRadius.circular(30))),
                   onPressed: () {
                     Navigator.push(context, MaterialPageRoute(builder: (context) {
-                      return FullReport(resultList,wordList);
+                      return FullReport(resultList,wordList,barchartList);
                     }));
                   },
                   child: Text(

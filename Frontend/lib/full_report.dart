@@ -6,20 +6,18 @@ import 'package:frontend/models/bar_chart_model.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 class FullReport extends StatelessWidget {
-  FullReport(List<dynamic> resultList, List<dynamic> wordList, {Key? key}) : super(key: key);
-
-  var random = Random();
+  final List<dynamic> barchartList;
+  const FullReport(List<dynamic> resultList, List<dynamic> wordList, this.barchartList, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    var monday =  random.nextInt(15) + 1;
-    var tues = random.nextInt(15) + 1;
-    var wes = random.nextInt(15) + 1;
-    var thus = random.nextInt(15) + 1;
-    var fri = random.nextInt(15) + 1;
-    var sat = random.nextInt(15) + 1;
-    var sun = random.nextInt(15) + 1;
-
+    var monday =  barchartList[0];
+    var tues = barchartList[1];
+    var wes = barchartList[2];
+    var thus = barchartList[3];
+    var fri = barchartList[4];
+    var sat = barchartList[5];
+    var sun = barchartList[6];
 
     final List<BarChartModel> barChartList = [
       BarChartModel('Monday',monday),

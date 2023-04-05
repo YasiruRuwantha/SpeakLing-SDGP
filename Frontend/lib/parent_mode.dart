@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -67,9 +69,13 @@ class _ParentModeState extends State<ParentMode> {
     }
 
   }
+  var random = Random();
 
   @override
   Widget build(BuildContext context) {
+    List barchartList = [random.nextInt(15) + 1,random.nextInt(15) + 1,
+    random.nextInt(15) + 1,random.nextInt(15) + 1,random.nextInt(15) + 1,random.nextInt(15) + 1,random.nextInt(15) + 1];
+
     return Scaffold(
       backgroundColor: primary,
       body: SingleChildScrollView(
@@ -238,7 +244,7 @@ class _ParentModeState extends State<ParentMode> {
                                     borderRadius: BorderRadius.circular(30))),
                             onPressed: () {
                               Navigator.push(context, MaterialPageRoute(builder: (context) {
-                                return DailyReport(resultList,wordList);
+                                return DailyReport(resultList,wordList,barchartList);
                               }));
                             },
                             child: Text(
@@ -308,7 +314,7 @@ class _ParentModeState extends State<ParentMode> {
                         borderRadius: BorderRadius.circular(30))),
                 onPressed: () {
                   Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    return FullReport(resultList,wordList);
+                    return FullReport(resultList,wordList,barchartList);
                   }));
                 },
                 child: Padding(
