@@ -6,12 +6,21 @@ import 'package:frontend/models/bar_chart_model.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 class FullReport extends StatelessWidget {
+  final List<dynamic> resultList;
+  late final List<dynamic> wordList;
   final List<dynamic> barchartList;
-  const FullReport(List<dynamic> resultList, List<dynamic> wordList, this.barchartList, {Key? key}) : super(key: key);
+
+  FullReport(this.resultList, this.wordList, this.barchartList, {Key? key})
+      : super(key: key);
+
+  List<BarChartModel> circleChart = [];
+
+  late final TooltipBehavior _tooltipBehavior =  TooltipBehavior(enable: true);
+
 
   @override
   Widget build(BuildContext context) {
-    var monday =  barchartList[0];
+    var monday = barchartList[0];
     var tues = barchartList[1];
     var wes = barchartList[2];
     var thus = barchartList[3];
@@ -20,7 +29,7 @@ class FullReport extends StatelessWidget {
     var sun = barchartList[6];
 
     final List<BarChartModel> barChartList = [
-      BarChartModel('Monday',monday),
+      BarChartModel('Monday', monday),
       BarChartModel('Tuesday', tues),
       BarChartModel('Wednesday', wes),
       BarChartModel('Thursday', thus),
@@ -28,6 +37,22 @@ class FullReport extends StatelessWidget {
       BarChartModel('Saturday', sat),
       BarChartModel('Sunday', sun),
     ];
+
+    if (wordList.length == 1) {
+      circleChart = [BarChartModel(wordList[0]['word'], 100)];
+    } else if (wordList.isEmpty) {
+      circleChart = [BarChartModel("other", 100)];
+    } else {
+      double word1 = (((wordList[0]['count']) / resultList.length) * 100);
+      double word2 = (((wordList[1]['count']) / resultList.length) * 100);
+      print(word1);
+      print(word2);
+      circleChart = [
+        BarChartModel(wordList[0]['word'], word1.round()),
+        BarChartModel(wordList[1]['word'], word2.round()),
+        BarChartModel("other", (100 - (word1 + word2)).round())
+      ];
+    }
 
     return Scaffold(
       backgroundColor: primary,
@@ -84,11 +109,10 @@ class FullReport extends StatelessWidget {
                       Text(
                         "Word Count",
                         style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 20,
-                          fontStyle: FontStyle.italic
-                        ),
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 20,
+                            fontStyle: FontStyle.italic),
                       ),
                       SizedBox(height: 5),
                       Text(
@@ -109,12 +133,20 @@ class FullReport extends StatelessWidget {
                             color: Colors.white,
                             fontWeight: FontWeight.bold,
                             fontSize: 18,
-                            fontStyle: FontStyle.italic
-                        ),
+                            fontStyle: FontStyle.italic),
                       ),
                       SizedBox(height: 5),
                       Text(
-                        double.parse(((monday+tues+wes+thus+fri+sat+sun)/7).toStringAsFixed(2)).toString(),
+                        double.parse(((monday +
+                                        tues +
+                                        wes +
+                                        thus +
+                                        fri +
+                                        sat +
+                                        sun) /
+                                    7)
+                                .toStringAsFixed(2))
+                            .toString(),
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 16,
@@ -140,12 +172,12 @@ class FullReport extends StatelessWidget {
                     primaryXAxis: CategoryAxis(),
                     series: <ChartSeries<BarChartModel, String>>[
                       AreaSeries<BarChartModel, String>(
-                        dataSource: barChartList,
-                        xValueMapper: (BarChartModel sales, _) => sales.time,
-                        yValueMapper: (BarChartModel sales, _) => sales.noOfWords,
-                        color: Colors.blue,
-                        yAxisName: "Words"
-                      ),
+                          dataSource: barChartList,
+                          xValueMapper: (BarChartModel sales, _) => sales.time,
+                          yValueMapper: (BarChartModel sales, _) =>
+                              sales.noOfWords,
+                          color: Colors.blue,
+                          yAxisName: "Words"),
                     ],
                   ),
                 ),
@@ -168,11 +200,10 @@ class FullReport extends StatelessWidget {
                       child: Text(
                         "Most Spoken Words",
                         style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          fontStyle: FontStyle.italic
-                        ),
+                            color: Colors.white,
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            fontStyle: FontStyle.italic),
                       ),
                     ),
                     Padding(
@@ -180,23 +211,22 @@ class FullReport extends StatelessWidget {
                       child: Text(
                         "Total words spoken is increased by 10% than previous week's average.",
                         style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 14,
+                          color: Colors.white,
+                          fontSize: 14,
                         ),
                       ),
                     ),
-
                     SfCircularChart(
+                      tooltipBehavior: _tooltipBehavior,
+                      legend: Legend(isVisible: true,textStyle: TextStyle(color: Colors.white)),
                       series: <CircularSeries<BarChartModel, String>>[
                         DoughnutSeries<BarChartModel, String>(
-                          dataSource: <BarChartModel>[
-                            BarChartModel("two", 38),
-                            BarChartModel("one", 36),
-                            BarChartModel("other", 25),
-                          ],
-                          xValueMapper: (BarChartModel sales, _) => sales.time,
-                          yValueMapper: (BarChartModel sales, _) => sales.noOfWords,
-                          enableTooltip: true,
+                            dataSource: circleChart,
+                            xValueMapper: (BarChartModel sales, _) => sales.time,
+                            yValueMapper: (BarChartModel sales, _) => sales.noOfWords,
+                            enableTooltip: true,
+                            name: "Data",
+                            // dataLabelSettings: DataLabelSettings(isVisible: true)
                         ),
                       ],
                     ),
@@ -204,7 +234,6 @@ class FullReport extends StatelessWidget {
                 ),
               ),
             ),
-
             Padding(
               padding: const EdgeInsets.all(30),
               child: Align(

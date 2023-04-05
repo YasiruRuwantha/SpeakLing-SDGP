@@ -3,9 +3,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend/Utils.dart';
 import 'package:frontend/constants.dart';
-import 'package:frontend/login.dart';
-import 'package:frontend/login_form.dart';
 import 'package:frontend/select_mode.dart';
+import 'UserModel.dart';
 
 class ChildFNameValidator{
   static String? validate(String value){
@@ -286,14 +285,13 @@ class _SignupChildState extends State<SignupChild> {
 
   Future createUser() async {
     final isValid = formKey.currentState!.validate();
-    //var firebaseUser = await FirebaseAuth.instance.currentUser();
 
     if (isValid && selected) {
       try{
         final addUser = FirebaseFirestore.instance.collection('User_Collection').doc(widget.userId);
 
 
-        final user = User(
+        final user = UserModel(
           parentFName: widget.parentFName,
           parentLName: widget.parentLName,
           childFName: childFName.text.trim(),
@@ -318,41 +316,5 @@ class _SignupChildState extends State<SignupChild> {
     }
 
   }
-
 }
-class User {
 
-  final String parentFName;
-  final String parentLName;
-  final String childFName;
-  final String childLName;
-  final String dob;
-  final String speechLevel;
-  String? userId;
-  final String email;
-
-  User({
-    required this.parentFName,
-    required this.parentLName,
-    required this.childFName,
-    required this.childLName,
-    required this.dob,
-    required this.speechLevel,
-    this.userId = '',
-    required this.email,
-  });
-
-  Map<String, dynamic> toJson() =>{
-    'Parent_First_Name': parentFName,
-    'Parent_Last_Name': parentLName,
-    'Child_First_Name': childFName,
-    'Child_Last_Name': childLName,
-    'DOB': dob,
-    'Speech_Level': speechLevel,
-    'User_Id': userId,
-    'Email': email,
-  };
-
-
-
-}
