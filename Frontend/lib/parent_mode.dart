@@ -23,14 +23,17 @@ class _ParentModeState extends State<ParentMode> {
   String fCName = '';
   String lCName = '';
   String speechLevel = '';
+  String top_words = "No words";
   String result = 'Result Here';
   List resultList = [];
+  List wordList = [];
 
   @override
   void initState() {
-    super.initState();
     getCurrentUser();
     getCurrentUserDOB();
+    getData();
+    super.initState();
   }
 
   Future<void> getCurrentUser() async {
@@ -63,10 +66,6 @@ class _ParentModeState extends State<ParentMode> {
       });
     }
 
-   /* if (userDOB == null) {
-      // The user's DOB is not set in the document
-      print('Error: DOB field not found or set to null');
-    }*/
   }
 
   @override
@@ -166,7 +165,7 @@ class _ParentModeState extends State<ParentMode> {
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
                           Text(
-                            "40",
+                            resultList.length.toString(),
                             style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 28,
@@ -189,7 +188,7 @@ class _ParentModeState extends State<ParentMode> {
                       ),
                       SizedBox(height: 5),
                       Text(
-                        "Compared to 36 yesterday",
+                        "Compared to yesterday",
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 13,
@@ -220,7 +219,7 @@ class _ParentModeState extends State<ParentMode> {
                                   ),
                                   SizedBox(height: 10),
                                   Text(
-                                    "Mommy, Hungry",
+                                    top_words,
                                     style: TextStyle(
                                       color: Colors.white,
                                       fontWeight: FontWeight.bold,
@@ -239,7 +238,7 @@ class _ParentModeState extends State<ParentMode> {
                                     borderRadius: BorderRadius.circular(30))),
                             onPressed: () {
                               Navigator.push(context, MaterialPageRoute(builder: (context) {
-                                return DailyReport();
+                                return DailyReport(resultList,wordList);
                               }));
                             },
                             child: Text(
@@ -309,7 +308,7 @@ class _ParentModeState extends State<ParentMode> {
                         borderRadius: BorderRadius.circular(30))),
                 onPressed: () {
                   Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    return FullReport();
+                    return FullReport(resultList,wordList);
                   }));
                 },
                 child: Padding(
@@ -364,5 +363,72 @@ class _ParentModeState extends State<ParentMode> {
       // The user's DOB is not set in the document
       print('Error: DOB field not found or set to null');
     }
+  }
+
+  void getData() async {
+    // Get a reference to the Firestore collection and document
+    final collectionRef =
+    FirebaseFirestore.instance.collection("Speaker_words");
+    final documentRef = collectionRef.doc(FirebaseAuth.instance.currentUser?.email);
+
+    // Retrieve the document snapshot
+    final docSnapshot = await documentRef.get();
+
+    // Check if the document exists
+    if (docSnapshot.exists) {
+      // Get the array from the document data
+      final arrayData = docSnapshot.get("speak_word");
+
+      // Convert the array to a list
+      final List<dynamic> arrayAsList = List<dynamic>.from(arrayData);
+
+      getTopWords(arrayAsList);
+      resultList = arrayAsList;
+    } else {
+      // throw Exception('Document does not exist');
+
+      resultList = [];
+    }
+  }
+
+  void getTopWords(List<dynamic> arrayAsList) {
+    var wordCount = <String, int>{};
+
+    // loop through the list and increment the count for each word in the map
+    for (var word in arrayAsList) {
+      if (wordCount.containsKey(word)) {
+        wordCount[word]= (wordCount[word] ?? 0) + 1;
+      } else {
+        wordCount[word] = 1;
+      }
+    }
+
+    // sort the map by the count of each word in descending order
+    var sortedWords = wordCount.entries.toList()
+      ..sort((a, b) => b.value.compareTo(a.value));
+
+    // create a list of maps containing the word and its count
+    var wordCountList = wordCount.entries.map((entry) => {
+      'word': entry.key,
+      'count': entry.value,
+    }).toList();
+
+    wordList = wordCountList;
+    print(wordList);
+    // get the top two words in the sorted map
+    var topTwoWords = sortedWords.take(2).map((e) => e.key).toList();
+
+    if (topTwoWords.length==1){
+      setState(() {
+        top_words=topTwoWords[0];
+        });
+    }else
+      {
+        setState(() {
+          top_words="${topTwoWords[0]},${topTwoWords[1]}";
+        });
+      }
+
+
   }
 }
