@@ -85,7 +85,7 @@ class _ChildModeState extends State<ChildMode> {
     }).onDone(() {
       // Do something when recognition is done
       isRecording.value = false;
-      if ((result != 'Result Here')&&(result != 'background')) resultList.add(result);
+      if ((result != 'Result Here')&&(result != 'background')&&((result != 'Background Noise'))) resultList.add(result);
       saveData();
       setState(() {
         result = 'Result Here';
@@ -265,7 +265,7 @@ class _ChildModeState extends State<ChildMode> {
                     borderRadius: BorderRadius.circular(30))),
             onPressed: () async {
               if (isRecording.value) {
-                if ((result != 'Result Here')&&(result != 'background')) resultList.add(result);
+                if ((result != 'Result Here')&&(result != 'background')&&((result != 'Background Noise'))) resultList.add(result);
                 await saveData();
                 setState(() {
                   result = 'Result Here';

@@ -222,7 +222,7 @@ class FullReport extends StatelessWidget {
                             xValueMapper: (BarChartModel sales, _) => sales.time,
                             yValueMapper: (BarChartModel sales, _) => sales.noOfWords,
                             enableTooltip: true,
-                            name: "Data",
+                            name: "Word",
                             // dataLabelSettings: DataLabelSettings(isVisible: true)
                         ),
                       ],
@@ -254,7 +254,7 @@ class FullReport extends StatelessWidget {
             ),
           ],
         ),
-      ),
+      )
     );
   }
 }
