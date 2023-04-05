@@ -1,23 +1,36 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:frontend/constants.dart';
 import 'package:frontend/models/bar_chart_model.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 class FullReport extends StatelessWidget {
-  FullReport({Key? key}) : super(key: key);
+  FullReport(List<dynamic> resultList, List<dynamic> wordList, {Key? key}) : super(key: key);
 
-  final List<BarChartModel> _barChartList = [
-    BarChartModel('Monday', 2),
-    BarChartModel('Tuesday', 4),
-    BarChartModel('Wednesday', 2),
-    BarChartModel('Thursday', 5),
-    BarChartModel('Friday', 10),
-    BarChartModel('Saturday', 15),
-    BarChartModel('Sunday', 3),
-  ];
+  var random = Random();
 
   @override
   Widget build(BuildContext context) {
+    var monday =  random.nextInt(15) + 1;
+    var tues = random.nextInt(15) + 1;
+    var wes = random.nextInt(15) + 1;
+    var thus = random.nextInt(15) + 1;
+    var fri = random.nextInt(15) + 1;
+    var sat = random.nextInt(15) + 1;
+    var sun = random.nextInt(15) + 1;
+
+
+    final List<BarChartModel> barChartList = [
+      BarChartModel('Monday',monday),
+      BarChartModel('Tuesday', tues),
+      BarChartModel('Wednesday', wes),
+      BarChartModel('Thursday', thus),
+      BarChartModel('Friday', fri),
+      BarChartModel('Saturday', sat),
+      BarChartModel('Sunday', sun),
+    ];
+
     return Scaffold(
       backgroundColor: primary,
       body: SingleChildScrollView(
@@ -103,7 +116,7 @@ class FullReport extends StatelessWidget {
                       ),
                       SizedBox(height: 5),
                       Text(
-                        "34.4 Words",
+                        double.parse(((monday+tues+wes+thus+fri+sat+sun)/7).toStringAsFixed(2)).toString(),
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 16,
@@ -129,7 +142,7 @@ class FullReport extends StatelessWidget {
                     primaryXAxis: CategoryAxis(),
                     series: <ChartSeries<BarChartModel, String>>[
                       AreaSeries<BarChartModel, String>(
-                        dataSource: _barChartList,
+                        dataSource: barChartList,
                         xValueMapper: (BarChartModel sales, _) => sales.time,
                         yValueMapper: (BarChartModel sales, _) => sales.noOfWords,
                         color: Colors.blue,

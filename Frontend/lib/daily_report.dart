@@ -5,18 +5,15 @@ import 'package:frontend/models/bar_chart_model.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 class DailyReport extends StatelessWidget {
-  DailyReport({Key? key}) : super(key: key);
-
-  final List<BarChartModel> _barChartList = [
-    BarChartModel('no', 2),
-    BarChartModel('yes', 4),
-    BarChartModel('one', 2),
-    BarChartModel('three', 5),
-    BarChartModel('two', 5),
-  ];
+  final List<dynamic> resultList;
+  final List<dynamic> wordList;
+  const DailyReport(this.resultList, this.wordList, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final List<BarChartModel> _barChartList = [
+      for (int i = 0; i < wordList.length; i++)BarChartModel(wordList[i]['word'],wordList[i]['count'])
+    ];
     return Scaffold(
       backgroundColor: primary,
       body: SingleChildScrollView(
@@ -136,27 +133,12 @@ class DailyReport extends StatelessWidget {
                 columns: [
                   DataColumn(label: Text("Word")),
                   DataColumn(label: Text("Count"), numeric: true),
-                  DataColumn(label: Text("Yesterday"), numeric: true),
-                  DataColumn(label: Text("Average"), numeric: true),
                 ],
                 rows: [
+                  for (int i = 0; i < wordList.length; i++)
                   DataRow(cells: [
-                    DataCell(Text("Mommy")),
-                    DataCell(Text("15")),
-                    DataCell(Text("15")),
-                    DataCell(Text("15")),
-                  ]),
-                  DataRow(cells: [
-                    DataCell(Text("Daddy")),
-                    DataCell(Text("15")),
-                    DataCell(Text("15")),
-                    DataCell(Text("15")),
-                  ]),
-                  DataRow(cells: [
-                    DataCell(Text("Hungry")),
-                    DataCell(Text("15")),
-                    DataCell(Text("15")),
-                    DataCell(Text("15")),
+                    DataCell(Text(wordList[i]['word'])),
+                    DataCell(Text(wordList[i]['count'].toString())),
                   ]),
                 ],
               ),
@@ -164,7 +146,7 @@ class DailyReport extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 30),
               child: Text(
-                "TOTAL : 30",
+                "TOTAL : ${resultList.length}",
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 20,
@@ -184,7 +166,7 @@ class DailyReport extends StatelessWidget {
                           borderRadius: BorderRadius.circular(30))),
                   onPressed: () {
                     Navigator.push(context, MaterialPageRoute(builder: (context) {
-                      return FullReport();
+                      return FullReport(resultList,wordList);
                     }));
                   },
                   child: Text(
@@ -199,4 +181,5 @@ class DailyReport extends StatelessWidget {
       ),
     );
   }
+
 }
