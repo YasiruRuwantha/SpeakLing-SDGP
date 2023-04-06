@@ -38,7 +38,7 @@ class _ChildModeState extends State<ChildMode> {
   final bool isAsset = true;
 
   ///Adjust the values below when tuning model detection.
-  final double detectionThreshold = 0.3;
+  final double detectionThreshold = 0.8;
   final int averageWindowDuration = 1000;
   final int minimumTimeBetweenSamples = 30;
   final int suppressionTime = 1500;
