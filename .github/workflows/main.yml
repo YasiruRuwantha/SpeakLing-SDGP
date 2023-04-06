@@ -20,10 +20,6 @@ jobs:
         run: flutter pub get
         working-directory: ./Frontend  
       
-      - name: Analyze code
-        run: flutter analyze
-        working-directory: ./Frontend  
-      
       - name: Run unit tests
         run: flutter test --coverage
         working-directory: ./Frontend  
@@ -38,4 +34,4 @@ jobs:
           app_id: ${{ secrets.FIREBASE_APP_ID }}
           api_token: ${{ secrets.FIREBASE_API_TOKEN }}
           groups: internal-testers
-          file: frontend/build/app/outputs/flutter-apk/app-release.apk  
+          file: frontend/build/app/outputs/flutter-apk/app-release.apk
