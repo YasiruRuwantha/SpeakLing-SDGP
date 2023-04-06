@@ -18,19 +18,19 @@ jobs:
       
       - name: Install dependencies
         run: flutter pub get
-        working-directory: frontend/  
+        working-directory: ./Frontend  
       
       - name: Analyze code
         run: flutter analyze
-        working-directory: frontend/  
+        working-directory: ./Frontend  
       
       - name: Run unit tests
         run: flutter test --coverage
-        working-directory: frontend/  
+        working-directory: ./Frontend  
       
       - name: Build APK
         run: flutter build apk --release
-        working-directory: frontend/  
+        working-directory: ./Frontend  
       
       - name: Deploy to Firebase App Distribution
         uses: wzieba/Firebase-Distribution-Github-Action@v1.4.0
