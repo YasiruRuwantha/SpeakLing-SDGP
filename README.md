@@ -46,9 +46,9 @@ Write your code and submit a pull request when ready.
 Please make sure to include tests for any new functionality and follow the code style guidelines outlined in the repository.
 
 <h2>Contributors</h2><br>
+Yasiru Ruwantha (<a href="https://github.com/YasiruRuwantha">@YasiruRuwantha</a>)<br>
 Maneesha Shehara (<a href="https://github.com/Maniya-spec">@Maniya-spec</a>)<br>
 Chathma Palliayaguruge (<a href="https://github.com/Chathma01">@Chathma01</a>)<br>
-Yasiru Ruwantha (<a href="https://github.com/YasiruRuwantha">@YasiruRuwantha</a>)<br>
 Tishan Chamoditha (<a href="https://github.com/TishanChamoditha">@TishanChamoditha</a>)<br>
 Fathima Zeeniya (<a href="https://github.com/JustFathima">@JustFathima</a>)<br>
 
